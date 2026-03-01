@@ -19,10 +19,10 @@ export class Save implements ImageTask {
     }
 
     public async process(frame: ImageFrame): Promise<ImageFrame | null> {
-        const folder = await this.file.getFolder();
+        const folder = this.file.getFolder();
         await fs.mkdir(folder, { recursive: true });
 
-        const filename = await this.file.getFilename();
+        const filename = this.file.getFilename();
         const ext = mimeToExt[frame.image.contentType] ?? "bin";
 
         const filepath = path.join(folder, `${filename}.${ext}`);
