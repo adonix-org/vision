@@ -22,15 +22,13 @@ preview;
 
 async function recordLoop() {
     while (true) {
-        // STOP phase
         if (recorder.running) {
             await recorder.stop();
         }
-        await new Promise((r) => setTimeout(r, 3_000)); // 3s stopped
+        await new Promise((r) => setTimeout(r, 1_000));
 
-        // START phase
         await recorder.start();
-        await new Promise((r) => setTimeout(r, 10_000)); // 10s recording
+        await new Promise((r) => setTimeout(r, 30_000));
     }
 }
 
