@@ -42,6 +42,6 @@ export class Filename {
     }
 
     public toString(): string {
-        return `[UniqueFile]`;
+        return `[Filename]`;
     }
 }

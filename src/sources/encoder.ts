@@ -49,6 +49,6 @@ export class Encoder extends Ffmpeg implements ImageSource {
     }
 
     public override toString(): string {
-        return `${super.toString()}[Mjpeg]`;
+        return `${super.toString()}[Encoder]`;
     }
 }
