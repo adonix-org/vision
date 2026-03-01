@@ -1,8 +1,7 @@
 import { Writable } from "node:stream";
 import { Lifecycle } from "../lifecycle";
-import { DataConsumer } from "../sources/streams/transport";
 
-export class DataBuffer extends Lifecycle implements DataConsumer {
+export class DataBuffer extends Lifecycle {
     private readonly chunks: Buffer[] = [];
     private size = 0;
 
