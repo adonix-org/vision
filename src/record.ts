@@ -16,3 +16,5 @@ const recorder = new Recorder(rtsp, "/Users/tybusby/Camera/recordings");
 
 application.register(rtsp, preview, recorder);
 application.start();
+
+preview;

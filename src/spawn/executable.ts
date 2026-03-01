@@ -36,16 +36,26 @@ export abstract class Executable extends Lifecycle {
     protected override async onstop(): Promise<void> {
         await super.onstop();
 
-        await new Promise<void>((resolve) => {
-            if (this._child === null || this._child.killed) {
-                resolve();
-                return;
-            }
+        if (!this._child || this._child.killed) return;
 
-            const cleanup = () => resolve();
-            this._child.once("exit", cleanup);
-            this._child.once("error", cleanup);
-            this._child.kill();
+        await new Promise<void>((resolve) => {
+            const child = this._child!;
+
+            const cleanup = () => {
+                clearTimeout(forceTimer);
+                resolve();
+            };
+
+            child.once("exit", cleanup);
+            child.once("error", cleanup);
+            child.kill();
+
+            const forceTimer = setTimeout(() => {
+                if (!child.killed) {
+                    console.warn(this.toString(), "terminating...");
+                    child.kill("SIGKILL");
+                }
+            }, 5000);
         });
     }
 
