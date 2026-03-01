@@ -12,8 +12,9 @@ export class BufferedPipe {
         this.input.resume();
 
         this.buffer = new PassThrough({ highWaterMark: 256 * 1024 });
-        this.input.pipe(this.buffer);
         this.buffer.pipe(this.output);
+
+        this.input.pipe(this.buffer);
     }
 
     public async end(): Promise<void> {
