@@ -18,12 +18,16 @@ export class MPV extends Executable implements ImageTask {
     }
 
     protected override args(): string[] {
-        const args = ["-", "--input-terminal=no", `--title=${this.title}`];
+        const args = ["--cache=no", `--title=${this.title}`, "-"];
         return args;
     }
 
     protected override async onstart(): Promise<void> {
         await super.onstart();
+
+        this.child.stdout.on("data", (chunk) => {
+            console.info(chunk.toString());
+        });
 
         this.pipe = new BufferedPipe(
             this.provider.getStream(),
