@@ -37,11 +37,12 @@ export class Preview extends Ffplay implements ImageTask {
             this.provider.getStream(),
             this.child.stdin,
         );
+
         await this.pipe.start();
     }
 
     protected override async onstop(): Promise<void> {
-        await this.pipe?.stop();
+        await this.pipe?.end();
 
         await super.onstop();
     }

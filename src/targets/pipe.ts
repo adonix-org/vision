@@ -1,19 +1,14 @@
 import { PassThrough, Readable, Writable } from "node:stream";
-import { Lifecycle } from "../lifecycle";
 
-export class BufferedPipe extends Lifecycle {
+export class BufferedPipe {
     private buffer: PassThrough | undefined;
 
     constructor(
         private readonly input: Readable,
         private readonly output: Writable,
-    ) {
-        super();
-    }
+    ) {}
 
-    protected override async onstart(): Promise<void> {
-        await super.onstart();
-
+    public async start(): Promise<void> {
         this.input.resume();
 
         this.buffer = new PassThrough({ highWaterMark: 256 * 1024 });
@@ -21,11 +16,10 @@ export class BufferedPipe extends Lifecycle {
         this.buffer.pipe(this.output);
     }
 
-    protected override async onstop(): Promise<void> {
-        await super.onstop();
+    public async end(): Promise<void> {
+        if (!this.buffer) return;
 
         const buffer = this.buffer;
-        if (!buffer) return;
 
         this.input.unpipe(buffer);
 
@@ -33,9 +27,11 @@ export class BufferedPipe extends Lifecycle {
             buffer.once("finish", resolve);
             buffer.end();
         });
+
+        this.buffer = undefined;
     }
 
-    public override toString(): string {
-        return `${super.toString()}[BufferedPipe]`;
+    public toString(): string {
+        return `[BufferedPipe]`;
     }
 }

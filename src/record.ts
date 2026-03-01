@@ -14,7 +14,7 @@ const rtsp = new Rtsp(C121_RTSP_URL);
 const preview = new Preview(rtsp, "mpegts", "LiveMotion");
 const recorder = new Recorder(rtsp, "/Users/tybusby/Camera/recordings");
 
-application.register(rtsp, recorder, preview);
+application.register(rtsp, preview, recorder);
 application.start();
 
 recorder;
