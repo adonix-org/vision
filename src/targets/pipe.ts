@@ -21,10 +21,15 @@ export class BufferedPipe {
         if (!buffer) return;
 
         this.input.unpipe(buffer);
-
         await new Promise<void>((resolve) => {
             buffer.once("finish", resolve);
             buffer.end();
+        });
+
+        buffer.unpipe(this.output);
+        await new Promise<void>((resolve) => {
+            this.output.once("finish", resolve);
+            this.output.end();
         });
     }
 

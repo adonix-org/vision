@@ -16,11 +16,3 @@ const recorder = new Recorder(rtsp, "/Users/tybusby/Camera/recordings");
 
 application.register(rtsp, preview, recorder);
 application.start();
-
-recorder;
-preview;
-
-setInterval(async () => {
-    await recorder.stop();
-    await recorder.start();
-}, 10_000);
