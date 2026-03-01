@@ -2,9 +2,11 @@ import { Executable } from "./executable";
 
 export class PyServer extends Executable {
     constructor() {
-        super(`${process.cwd()}/python/.venv/bin/python`, [
-            `${process.cwd()}/python/app/pyserver.py`,
-        ]);
+        super(`${process.cwd()}/python/.venv/bin/python`);
+    }
+
+    protected override async args(): Promise<string[]> {
+        return [`${process.cwd()}/python/app/pyserver.py`];
     }
 
     protected override async onstart(): Promise<void> {

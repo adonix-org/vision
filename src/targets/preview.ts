@@ -8,21 +8,24 @@ type DataFormat = "mjpeg" | "mpegts";
 export class Preview extends Ffplay implements ImageTask {
     constructor(
         private readonly provider: StreamProvider,
-        format: DataFormat = "mjpeg",
-        title = "Preview",
+        private readonly format: DataFormat = "mjpeg",
+        private readonly title = "Preview",
     ) {
+        super();
+    }
+
+    protected override async args(): Promise<string[]> {
         const args = [
             "-loglevel",
             "quiet",
             "-f",
-            format,
+            this.format,
             "-i",
             "pipe:0",
             "-window_title",
-            title,
+            this.title,
         ];
-
-        super(args);
+        return args;
     }
 
     protected override async onstart(): Promise<void> {

@@ -6,7 +6,11 @@ export interface StreamProvider {
 }
 
 export class Rtsp extends Ffmpeg implements StreamProvider {
-    constructor(url: string) {
+    constructor(private readonly url: string) {
+        super();
+    }
+
+    protected override async args(): Promise<string[]> {
         const args = [
             "-loglevel",
             "fatal",
@@ -15,7 +19,7 @@ export class Rtsp extends Ffmpeg implements StreamProvider {
             "-use_wallclock_as_timestamps",
             "1",
             "-i",
-            url,
+            this.url,
             "-an",
             "-c",
             "copy",
@@ -23,8 +27,7 @@ export class Rtsp extends Ffmpeg implements StreamProvider {
             "mpegts",
             "pipe:1",
         ];
-
-        super(args);
+        return args;
     }
 
     public getStream(): Readable {

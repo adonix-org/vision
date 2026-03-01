@@ -1,8 +1,8 @@
 import { Executable } from "./executable";
 
 export abstract class Ffmpeg extends Executable {
-    constructor(args: string[]) {
-        super("/opt/homebrew/bin/ffmpeg", args);
+    constructor() {
+        super("/opt/homebrew/bin/ffmpeg");
     }
 
     public override toString(): string {

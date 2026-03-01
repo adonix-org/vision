@@ -1,22 +1,28 @@
 import { Ffmpeg } from "../spawn/ffmpeg";
 
 export class FileSource extends Ffmpeg {
-    constructor(path: string, fps: number = 15) {
+    constructor(
+        private readonly file: string,
+        private readonly fps: number = 15,
+    ) {
+        super();
+    }
+
+    protected override async args(): Promise<string[]> {
         const args = [
             "-loglevel",
             "fatal",
             "-i",
-            path,
+            this.file,
             "-vf",
-            `fps=${fps}`,
+            `fps=${this.fps}`,
             "-f",
             "image2pipe",
             "-vcodec",
             "mjpeg",
             "pipe:1",
         ];
-
-        super(args);
+        return args;
     }
 
     public override toString(): string {

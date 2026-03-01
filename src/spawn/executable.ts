@@ -4,12 +4,11 @@ import { Lifecycle } from "../lifecycle";
 export abstract class Executable extends Lifecycle {
     private _child: ChildProcessWithoutNullStreams | null = null;
 
-    constructor(
-        private readonly path: string,
-        private readonly args: string[],
-    ) {
+    constructor(private readonly path: string) {
         super();
     }
+
+    protected abstract args(): Promise<string[]>;
 
     protected get child(): ChildProcessWithoutNullStreams {
         if (!this._child) {
@@ -21,7 +20,7 @@ export abstract class Executable extends Lifecycle {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
-        this._child = spawn(this.path, this.args);
+        this._child = spawn(this.path, await this.args());
 
         this._child.stderr.on("data", (buffer: Buffer) => {
             this.stderr(buffer);

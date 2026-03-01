@@ -6,25 +6,28 @@ import { ImageStream } from "./streams/image";
 export class Encoder extends Ffmpeg implements ImageSource {
     constructor(
         private readonly stream: ImageStream,
-        fps: number = 15,
+        private readonly fps: number = 15,
     ) {
+        super();
+
+        this.register(stream);
+    }
+
+    protected override async args(): Promise<string[]> {
         const args = [
             "-loglevel",
             "fatal",
             "-i",
             "pipe:0",
             "-vf",
-            `fps=${fps}`,
+            `fps=${this.fps}`,
             "-f",
             "image2pipe",
             "-vcodec",
-            stream.vcodec,
+            this.stream.vcodec,
             "pipe:1",
         ];
-
-        super(args);
-
-        this.register(stream);
+        return args;
     }
 
     public ondata(data: Buffer): Promise<void> | void {

@@ -1,8 +1,8 @@
 import { Executable } from "./executable";
 
 export abstract class Ffplay extends Executable {
-    constructor(args: string[]) {
-        super("/opt/homebrew/bin/ffplay", args);
+    constructor() {
+        super("/opt/homebrew/bin/ffplay");
     }
 
     public override toString(): string {

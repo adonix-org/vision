@@ -9,7 +9,7 @@ export class Extract extends Workflow {
         super();
 
         this.addTask(new Remote("grayscale"));
-        this.addTask(new Save(folder));
+        this.addTask(new Save(folder, "image"));
     }
 
     public override async process(frame: ImageFrame): Promise<ImageFrame> {
