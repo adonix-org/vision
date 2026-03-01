@@ -19,3 +19,11 @@ application.start();
 
 recorder;
 preview;
+
+setInterval(async () => {
+    if (recorder.running) {
+        await recorder.stop();
+    } else {
+        await recorder.start();
+    }
+}, 5_000);

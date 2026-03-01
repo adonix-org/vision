@@ -27,7 +27,14 @@ export class Rtsp extends Ffmpeg implements StreamProvider {
             "mpegts",
             "pipe:1",
         ];
+
         return args;
+    }
+
+    protected override async onstart(): Promise<void> {
+        await super.onstart();
+
+        this.child.stdout.resume();
     }
 
     public getStream(): Readable {

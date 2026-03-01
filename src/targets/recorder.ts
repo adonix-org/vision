@@ -6,6 +6,8 @@ import { Filename } from "../utils/filename";
 import path from "node:path";
 
 export class Recorder extends Ffmpeg {
+    private buffer: PassThrough | undefined;
+
     constructor(
         private readonly provider: StreamProvider,
         private readonly folder: string,
@@ -15,7 +17,7 @@ export class Recorder extends Ffmpeg {
     }
 
     protected override async args(): Promise<string[]> {
-        const filename = await new Filename(this.folder, "movie").getFilename();
+        const filename = new Filename(this.folder, "movie").getFilename();
 
         const filepath = path.join(
             this.folder,
@@ -39,14 +41,28 @@ export class Recorder extends Ffmpeg {
     }
 
     protected override async onstart(): Promise<void> {
+        const source = this.provider.getStream()!;
+
+        source.resume();
+
+        await fs.mkdir(this.folder, { recursive: true });
         await super.onstart();
 
-        await fs.mkdir(this.folder, { recursive: true });
+        this.buffer = new PassThrough({ highWaterMark: 256 * 1024 });
+        source.pipe(this.buffer);
+        this.buffer.pipe(this.child.stdin);
+    }
 
-        const buffer = new PassThrough({ highWaterMark: 256 * 1024 });
-        this.provider.getStream().pipe(buffer).pipe(this.child.stdin);
+    protected override async onstop(): Promise<void> {
+        const source = this.provider.getStream()!;
 
-        await fs.mkdir(this.folder, { recursive: true });
+        source.unpipe(this.buffer);
+        await new Promise<void>((resolve) => {
+            this.buffer!.once("finish", resolve);
+            this.buffer!.end();
+        });
+
+        await super.onstop();
     }
 
     public override toString(): string {
