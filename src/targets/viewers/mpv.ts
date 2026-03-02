@@ -19,14 +19,6 @@ export class MpvViewer extends Viewer implements ImageTask {
         return args;
     }
 
-    protected override async onstart(): Promise<void> {
-        await super.onstart();
-
-        this.child.stdout.on("data", (chunk) => {
-            console.info(this.toString(), chunk.toString().trim());
-        });
-    }
-
     public override toString(): string {
         return `${super.toString()}[mpv]`;
     }

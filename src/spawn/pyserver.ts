@@ -23,7 +23,7 @@ export class PyServer extends Executable {
             if (this.child === null)
                 return reject(new Error("Process failed to start"));
 
-            this.child.stdout?.on("data", (data) => {
+            this.child.stdout.on("data", (data) => {
                 const text = data.toString();
                 if (text.includes("PyServer ready")) {
                     resolve();
