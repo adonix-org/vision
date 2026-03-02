@@ -44,14 +44,14 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
+        this.child.stdout.on("data", (chunk: Buffer) => {
+            this.decoder.ondata(chunk);
+        });
+
         this.pipe = new BufferedPipe(
             this.broadcast.getStream(),
             this.child.stdin,
         );
-
-        this.child.stdout.on("data", (chunk: Buffer) => {
-            this.decoder.ondata(chunk);
-        });
 
         await this.pipe.start();
     }
