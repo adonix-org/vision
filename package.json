@@ -6,9 +6,9 @@
     "scripts": {
         "build": "tsc",
         "dev": "npm run build && DEBUG=true tsx src/index.ts",
-        "backup": "npm run build && tsx src/backup.ts",
-        "record": "npm run build && DEBUG=true tsx src/record.ts",
         "start": "npm run build && tsx src/index.ts",
+        "monitor": "npm run build && tsx src/monitor.ts",
+        "record": "npm run build && tsx src/record.ts",
         "debug": "cross-env DEBUG=true npm run"
     },
     "keywords": [],
