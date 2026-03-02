@@ -1,11 +1,11 @@
 import { AgentSource } from "../agents";
 import { Lifecycle } from "../lifecycle";
-import { MJpeg } from "../targets/mjpeg";
+import { StreamDecoder } from "./decoders/stream";
 import { MpvViewer } from "../targets/viewers/mpv";
 import { Viewer } from "../targets/viewers/viewer";
 import { ImageFrame } from "../tasks";
 import { Rtsp } from "./rtsp";
-import { LiveStream } from "./streams/live";
+import { LiveDecoder } from "./decoders/live";
 
 const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
@@ -15,9 +15,9 @@ export class C121 extends Lifecycle implements AgentSource {
         this.camera,
         "C121 - Front Yard",
     );
-    private readonly source: AgentSource = new MJpeg(
+    private readonly encoder: AgentSource = new StreamDecoder(
         this.camera,
-        new LiveStream(1),
+        new LiveDecoder(1),
         this.fps,
     );
 
@@ -26,11 +26,11 @@ export class C121 extends Lifecycle implements AgentSource {
 
         this.register(this.camera);
         this.register(this.viewer);
-        this.register(this.source);
+        this.register(this.encoder);
     }
 
     public async next(): Promise<ImageFrame | null> {
-        return await this.source.next();
+        return await this.encoder.next();
     }
 
     public getName(): string {

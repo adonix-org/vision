@@ -1,7 +1,7 @@
 import { ImageFrame } from "../../tasks";
-import { JpegStream } from "./formats";
+import { JpegDecoder } from "./formats";
 
-export class LiveStream extends JpegStream {
+export class LiveDecoder extends JpegDecoder {
     protected onimage(buffer: Buffer): ImageFrame {
         return {
             image: { buffer, contentType: "image/jpeg" },
@@ -12,6 +12,6 @@ export class LiveStream extends JpegStream {
     }
 
     public override toString(): string {
-        return `${super.toString()}[LiveStream]`;
+        return `${super.toString()}[LiveDecoder]`;
     }
 }

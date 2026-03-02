@@ -1,7 +1,7 @@
 import { ImageFrame } from "../../tasks";
-import { JpegStream } from "./formats";
+import { JpegDecoder } from "./formats";
 
-export class FixedFpsStream extends JpegStream {
+export class FixedFpsDecoder extends JpegDecoder {
     private readonly frameDuration: number;
     private frameIndex = 0;
 
@@ -23,6 +23,6 @@ export class FixedFpsStream extends JpegStream {
     }
 
     public override toString(): string {
-        return `${super.toString()}[FixedFpsStream]`;
+        return `${super.toString()}[FixedFpsDecoder]`;
     }
 }

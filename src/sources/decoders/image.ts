@@ -1,7 +1,7 @@
 import { ImageFrame } from "../../tasks";
 import { ImageQueue } from "../queue";
 
-export abstract class ImageStream extends ImageQueue {
+export abstract class ImageDecoder extends ImageQueue {
     private buffer: Buffer = Buffer.alloc(0);
     private offset = 0;
 
@@ -53,6 +53,6 @@ export abstract class ImageStream extends ImageQueue {
     }
 
     public override toString(): string {
-        return `${super.toString()}[ImageStream]`;
+        return `${super.toString()}[ImageDecoder]`;
     }
 }

@@ -1,6 +1,6 @@
-import { ImageStream } from "./image";
+import { ImageDecoder } from "./image";
 
-export abstract class JpegStream extends ImageStream {
+export abstract class JpegDecoder extends ImageDecoder {
     public static readonly SOI = Buffer.from([0xff, 0xd8]);
     public static readonly EOI = Buffer.from([0xff, 0xd9]);
 
@@ -9,11 +9,11 @@ export abstract class JpegStream extends ImageStream {
     }
 
     protected override get soi(): Buffer {
-        return JpegStream.SOI;
+        return JpegDecoder.SOI;
     }
 
     protected override get eoi(): Buffer {
-        return JpegStream.EOI;
+        return JpegDecoder.EOI;
     }
 
     public override toString(): string {
@@ -21,7 +21,7 @@ export abstract class JpegStream extends ImageStream {
     }
 }
 
-export abstract class GifStream extends ImageStream {
+export abstract class GifDecoder extends ImageDecoder {
     public static readonly SOI = Buffer.from("GIF89a", "ascii");
     public static readonly EOI = Buffer.from([0x3b]);
 
@@ -30,11 +30,11 @@ export abstract class GifStream extends ImageStream {
     }
 
     protected override get soi(): Buffer {
-        return GifStream.SOI;
+        return GifDecoder.SOI;
     }
 
     protected override get eoi(): Buffer {
-        return GifStream.EOI;
+        return GifDecoder.EOI;
     }
 
     public override toString(): string {
@@ -42,7 +42,7 @@ export abstract class GifStream extends ImageStream {
     }
 }
 
-export abstract class PngStream extends ImageStream {
+export abstract class PngDecoder extends ImageDecoder {
     public static readonly SOI = Buffer.from([
         0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
     ]);
@@ -55,11 +55,11 @@ export abstract class PngStream extends ImageStream {
     }
 
     protected override get soi(): Buffer {
-        return PngStream.SOI;
+        return PngDecoder.SOI;
     }
 
     protected override get eoi(): Buffer {
-        return PngStream.EOI;
+        return PngDecoder.EOI;
     }
 
     public override toString(): string {

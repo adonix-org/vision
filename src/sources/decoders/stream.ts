@@ -1,21 +1,21 @@
-import { ImageSource } from "../sources";
-import { StreamProvider } from "../sources/rtsp";
-import { ImageStream } from "../sources/streams/image";
-import { Ffmpeg } from "../spawn/ffmpeg";
-import { ImageFrame } from "../tasks";
-import { BufferedPipe } from "./pipe";
+import { ImageSource } from "..";
+import { StreamProvider } from "../rtsp";
+import { ImageDecoder } from "./image";
+import { Ffmpeg } from "../../spawn/ffmpeg";
+import { ImageFrame } from "../../tasks";
+import { BufferedPipe } from "../../targets/pipe";
 
-export class MJpeg extends Ffmpeg implements ImageSource {
+export class StreamDecoder extends Ffmpeg implements ImageSource {
     private pipe: BufferedPipe | undefined;
 
     constructor(
         private readonly provider: StreamProvider,
-        private readonly imageStream: ImageStream,
+        private readonly decoder: ImageDecoder,
         private readonly fps: number,
     ) {
         super();
 
-        this.register(this.imageStream);
+        this.register(this.decoder);
     }
 
     protected override args(): string[] {
@@ -31,14 +31,14 @@ export class MJpeg extends Ffmpeg implements ImageSource {
             "-f",
             "image2pipe",
             "-vcodec",
-            this.imageStream.vcodec,
+            this.decoder.vcodec,
             "pipe:1",
         ];
         return args;
     }
 
     public async next(): Promise<ImageFrame | null> {
-        return this.imageStream.next();
+        return this.decoder.next();
     }
 
     protected override async onstart(): Promise<void> {
@@ -50,7 +50,7 @@ export class MJpeg extends Ffmpeg implements ImageSource {
         );
 
         this.child.stdout.on("data", (chunk: Buffer) => {
-            this.imageStream.ondata(chunk);
+            this.decoder.ondata(chunk);
         });
 
         await this.pipe.start();
@@ -63,6 +63,6 @@ export class MJpeg extends Ffmpeg implements ImageSource {
     }
 
     public override toString(): string {
-        return `${super.toString()}[mjpeg]`;
+        return `${super.toString()}[StreamDecoder]`;
     }
 }
