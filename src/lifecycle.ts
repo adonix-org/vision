@@ -21,10 +21,10 @@ export abstract class Lifecycle {
         return this.schedule(async () => {
             if (this.running) return;
 
-            console.debug(this.toString(), "starting...");
+            console.info(this.toString(), "starting...");
             await this.onstart();
             this._running = true;
-            console.debug(this.toString(), "started");
+            console.info(this.toString(), "started");
         });
     }
 
@@ -32,10 +32,10 @@ export abstract class Lifecycle {
         return this.schedule(async () => {
             if (!this.running) return;
 
-            console.debug(this.toString(), "stopping...");
+            console.info(this.toString(), "stopping...");
             await this.onstop();
             this._running = false;
-            console.debug(this.toString(), "stopped");
+            console.info(this.toString(), "stopped");
         });
     }
 
