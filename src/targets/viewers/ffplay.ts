@@ -1,16 +1,16 @@
+import { Broadcast } from "../../sources/broadcast";
 import { ImageTask } from "../../tasks";
-import { StreamProvider } from "../../sources/rtsp";
 import { Viewer } from "./viewer";
 
 type DataFormat = "mjpeg" | "mpegts";
 
 export class FfplayViewer extends Viewer implements ImageTask {
     constructor(
-        provider: StreamProvider,
+        broadcast: Broadcast,
         private readonly format: DataFormat,
         private readonly title: string = "Publisher",
     ) {
-        super(provider);
+        super(broadcast);
     }
 
     protected override executable(): string {

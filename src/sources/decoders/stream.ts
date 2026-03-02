@@ -1,15 +1,15 @@
 import { ImageSource } from "..";
-import { StreamProvider } from "../rtsp";
 import { ImageDecoder } from "./image";
 import { Ffmpeg } from "../../spawn/ffmpeg";
 import { ImageFrame } from "../../tasks";
 import { BufferedPipe } from "../../targets/pipe";
+import { Broadcast } from "../broadcast";
 
 export class StreamDecoder extends Ffmpeg implements ImageSource {
     private pipe: BufferedPipe | undefined;
 
     constructor(
-        private readonly provider: StreamProvider,
+        private readonly broadcast: Broadcast,
         private readonly decoder: ImageDecoder,
         private readonly fps: number,
     ) {
@@ -45,7 +45,7 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         await super.onstart();
 
         this.pipe = new BufferedPipe(
-            this.provider.getStream(),
+            this.broadcast.getReadable(),
             this.child.stdin,
         );
 

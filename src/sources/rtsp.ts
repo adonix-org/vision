@@ -1,11 +1,8 @@
 import { Readable } from "node:stream";
 import { Ffmpeg } from "../spawn/ffmpeg";
+import { Broadcast } from "./broadcast";
 
-export interface StreamProvider {
-    getStream(): Readable;
-}
-
-export class Rtsp extends Ffmpeg implements StreamProvider {
+export class Rtsp extends Ffmpeg implements Broadcast {
     constructor(private readonly url: string) {
         super();
     }
@@ -37,7 +34,7 @@ export class Rtsp extends Ffmpeg implements StreamProvider {
         this.child.stdout.resume();
     }
 
-    public getStream(): Readable {
+    public getReadable(): Readable {
         return this.child.stdout;
     }
 

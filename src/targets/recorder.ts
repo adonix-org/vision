@@ -1,15 +1,15 @@
 import { promises as fs } from "node:fs";
 import { Ffmpeg } from "../spawn/ffmpeg";
-import { StreamProvider } from "../sources/rtsp";
 import { Filename } from "../utils/filename";
 import path from "node:path";
 import { BufferedPipe } from "./pipe";
+import { Broadcast } from "../sources/broadcast";
 
 export class Recorder extends Ffmpeg {
     private pipe: BufferedPipe | undefined;
 
     constructor(
-        private readonly provider: StreamProvider,
+        private readonly broadcast: Broadcast,
         private readonly folder: string,
         private readonly extension: string = "mp4",
     ) {
@@ -51,7 +51,7 @@ export class Recorder extends Ffmpeg {
         await super.onstart();
 
         this.pipe = new BufferedPipe(
-            this.provider.getStream(),
+            this.broadcast.getReadable(),
             this.child.stdin,
         );
         await this.pipe.start();

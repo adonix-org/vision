@@ -1,4 +1,4 @@
-import { StreamProvider } from "../../sources/rtsp";
+import { Broadcast } from "../../sources/broadcast";
 import { Executable } from "../../spawn/executable";
 import { ImageFrame, ImageTask } from "../../tasks";
 import { BufferedPipe } from "../pipe";
@@ -6,7 +6,7 @@ import { BufferedPipe } from "../pipe";
 export abstract class Viewer extends Executable implements ImageTask {
     private pipe: BufferedPipe | undefined;
 
-    constructor(private readonly provider: StreamProvider) {
+    constructor(private readonly broadcast: Broadcast) {
         super();
     }
 
@@ -14,7 +14,7 @@ export abstract class Viewer extends Executable implements ImageTask {
         await super.onstart();
 
         this.pipe = new BufferedPipe(
-            this.provider.getStream(),
+            this.broadcast.getReadable(),
             this.child.stdin,
         );
 
