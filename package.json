@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc",
         "dev": "npm run build && DEBUG=true tsx src/index.ts",
-        "backup": "npm run build && DEBUG=true tsx src/backup.ts",
+        "backup": "npm run build && tsx src/backup.ts",
         "record": "npm run build && DEBUG=true tsx src/record.ts",
         "start": "npm run build && tsx src/index.ts",
         "debug": "cross-env DEBUG=true npm run"

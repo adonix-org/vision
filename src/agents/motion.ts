@@ -6,7 +6,7 @@ import { PyServer } from "../spawn/pyserver";
 
 export class Motion extends Agent {
     constructor() {
-        const source = new C121();
+        const source = new C121(5);
 
         super(source, new PyServer());
 

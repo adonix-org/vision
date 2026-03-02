@@ -18,10 +18,10 @@ export class C121 extends Lifecycle implements AgentSource {
     private readonly source: AgentSource = new MJpeg(
         this.camera,
         new LiveStream(1),
-        1,
+        this.fps,
     );
 
-    constructor() {
+    constructor(private readonly fps: number) {
         super();
 
         this.register(this.camera);
