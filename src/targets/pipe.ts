@@ -24,10 +24,10 @@ export class BufferedPipe {
             if (err.code === "EPIPE" || err.code === "ECONNRESET") {
                 console.warn(
                     this.toString(),
-                    `slow/broken listener detected (${err.code}) — isolating`,
+                    `slow/broken consumer detected (${err.code}) — isolating`,
                 );
             } else {
-                console.error(this.toString(), `output error:`, err);
+                console.error(this.toString(), err);
             }
 
             this.stop();
@@ -44,6 +44,8 @@ export class BufferedPipe {
 
         this.branch.unpipe(this.output);
         this.branch.end();
+
+        this.output.end();
 
         try {
             await finished(this.branch, { writable: true, readable: false });
