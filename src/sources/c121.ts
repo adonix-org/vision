@@ -1,20 +1,28 @@
 import { ImageSource } from ".";
+import { Lifecycle } from "../lifecycle";
+import { MJpeg } from "../targets/mjpeg";
+import { MpvViewer } from "../targets/viewers/mpv";
 import { ImageFrame } from "../tasks";
-import { Encoder } from "./encoder";
 import { Rtsp } from "./rtsp";
 import { CameraStream } from "./streams/camera";
 
 const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
-export class C121 extends Rtsp implements ImageSource {
-    private readonly codec = new Encoder(new CameraStream());
+export class C121 extends Lifecycle implements ImageSource {
+    private readonly rtsp: Rtsp = new Rtsp(C121_RTSP_URL);
+    private readonly mpv: MpvViewer = new MpvViewer(this.rtsp);
+    private readonly mjpeg: MJpeg = new MJpeg(this.rtsp, new CameraStream(), 1);
 
     constructor() {
-        super(C121_RTSP_URL);
+        super();
+
+        this.register(this.rtsp);
+        this.register(this.mpv);
+        this.register(this.mjpeg);
     }
 
     public async next(): Promise<ImageFrame | null> {
-        return await this.codec.next();
+        return await this.mjpeg.next();
     }
 
     public getName(): string {
@@ -23,5 +31,9 @@ export class C121 extends Rtsp implements ImageSource {
 
     protected getUrl(): string {
         return C121_RTSP_URL;
+    }
+
+    public override toString(): string {
+        return `${super.toString()}[C121]`;
     }
 }

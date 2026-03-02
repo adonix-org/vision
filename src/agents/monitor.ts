@@ -8,7 +8,6 @@ import { PyServer } from "../spawn/pyserver";
 export class MonitorLive extends Agent {
     constructor() {
         const source = new C121();
-
         const live = new LiveImage(source.getName());
         const session = new PublisherSession(live);
         const monitor = new Monitor();
@@ -18,7 +17,7 @@ export class MonitorLive extends Agent {
         this.register(new PyServer());
         this.register(monitor);
 
-        this.addTask(live);
+        //this.addTask(live);
         this.addTask(monitor);
     }
 
