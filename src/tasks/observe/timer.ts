@@ -9,6 +9,10 @@ export class Timer implements ImageTask {
         interval = 5000,
     ) {
         setInterval(() => {
+            if (this.count === 0) {
+                return;
+            }
+
             const avg = this.duration / this.count;
             console.info(
                 `${avg.toFixed(3)}ms called ${this.count} times`,
