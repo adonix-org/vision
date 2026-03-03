@@ -7,7 +7,7 @@ export class Enhance implements ImageTask {
             .modulate({ brightness: 1.05, saturation: 1.25 })
             .linear(1.1, -10)
             .gamma(1.05)
-            .sharpen({ sigma: 2.0 })
+            .sharpen({ sigma: 2 })
             .toBuffer();
 
         return { ...frame, image: { ...frame.image, buffer: enhancedBuffer } };

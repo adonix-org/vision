@@ -2,7 +2,7 @@ import { PassThrough, Readable, Writable } from "node:stream";
 import { finished } from "node:stream/promises";
 
 export class BufferedPipe {
-    private branch = new PassThrough({
+    private readonly branch = new PassThrough({
         highWaterMark: 1024 * 1024,
         allowHalfOpen: true,
     });
@@ -34,8 +34,6 @@ export class BufferedPipe {
         });
 
         this.output.once("close", () => this.stop());
-
-        return;
     }
 
     public async stop(): Promise<void> {
