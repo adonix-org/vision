@@ -9,7 +9,7 @@ export class PreRoll extends Lifecycle implements Broadcast {
 
     constructor(
         private readonly broadcast: Broadcast,
-        private readonly maxSize: number = 256 * 1024,
+        private readonly maxSize: number = 128 * 1024,
     ) {
         super();
     }
