@@ -16,7 +16,6 @@ export class PreRoll extends Lifecycle implements Broadcast {
 
     public getStream(): Readable {
         const out = new PassThrough();
-
         this.stream.pause();
 
         for (const chunk of this.buffer) {
@@ -24,9 +23,7 @@ export class PreRoll extends Lifecycle implements Broadcast {
         }
 
         this.stream.pipe(out);
-
         this.stream.resume();
-
         return out;
     }
 
