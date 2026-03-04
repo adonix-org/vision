@@ -15,7 +15,7 @@ export class C121 extends Lifecycle implements AgentSource {
         this.camera,
         "C121 - Front Yard",
     );
-    private readonly encoder: AgentSource = new StreamDecoder(
+    private readonly decoder: AgentSource = new StreamDecoder(
         this.camera,
         new LiveDecoder(1),
         this.fps,
@@ -26,11 +26,11 @@ export class C121 extends Lifecycle implements AgentSource {
 
         this.register(this.camera);
         this.register(this.viewer);
-        this.register(this.encoder);
+        this.register(this.decoder);
     }
 
     public async next(): Promise<ImageFrame | null> {
-        return await this.encoder.next();
+        return await this.decoder.next();
     }
 
     public getName(): string {
