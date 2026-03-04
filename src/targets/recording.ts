@@ -54,18 +54,6 @@ export class Recording extends Ffmpeg {
         this.stream.pipe(this.child.stdin);
     }
 
-    protected override async onstop(): Promise<void> {
-        if (this.stream) {
-            this.stream.unpipe(this.child.stdin);
-            this.child.stdin.end();
-
-            this.stream.destroy();
-            this.stream = undefined;
-        }
-
-        await super.onstop();
-    }
-
     public override toString(): string {
         return `${super.toString()}[Recording]`;
     }

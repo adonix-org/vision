@@ -17,18 +17,6 @@ export abstract class Viewer extends Executable implements ImageTask {
         this.stream.pipe(this.child.stdin);
     }
 
-    protected override async onstop(): Promise<void> {
-        if (this.stream) {
-            this.stream.unpipe(this.child.stdin);
-            this.child.stdin.end();
-
-            this.stream.destroy();
-            this.stream = undefined;
-        }
-
-        await super.onstop();
-    }
-
     public async process(frame: ImageFrame): Promise<ImageFrame | null> {
         this.child.stdin.write(frame.image.buffer);
 
