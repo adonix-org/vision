@@ -33,7 +33,7 @@ export abstract class Viewer extends Executable {
     }
 
     protected override async quit(afterMs?: number): Promise<void> {
-        this.child.stdin.end();
+        this.end();
 
         await super.quit(afterMs);
     }

@@ -10,9 +10,16 @@ export abstract class Executable extends Lifecycle {
 
     protected get child(): ChildProcessWithoutNullStreams {
         if (!this._child) {
-            throw new Error(`${this.executable} is not running.`);
+            throw new Error(`${this.executable()} is not running.`);
         }
         return this._child;
+    }
+
+    protected end(): boolean {
+        if (!this._child) return false;
+
+        this._child.stdin.end();
+        return true;
     }
 
     protected override async onstart(): Promise<void> {
