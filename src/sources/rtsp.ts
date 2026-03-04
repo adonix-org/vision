@@ -33,9 +33,18 @@ export class Rtsp extends Ffmpeg implements Broadcast {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
-        this.child.stdout.on("data", (chunk: Buffer) => {
+        this.child.stdout.on("data", (chunk) => {
             for (const subscriber of this.subscribers) {
-                subscriber.write(chunk);
+                const free = subscriber.write(chunk);
+                if (!free) {
+                    const overflow =
+                        subscriber.writableLength -
+                        subscriber.writableHighWaterMark;
+                    console.warn(
+                        this.toString(),
+                        `subscriber buffer memory exceeded ${overflow} bytes`,
+                    );
+                }
             }
         });
     }
