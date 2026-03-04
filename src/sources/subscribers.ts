@@ -1,7 +1,7 @@
 import { PassThrough, Readable } from "node:stream";
 
 export class Subscribers {
-    private static readonly DEFAULT_HIGHWATER = 128 * 1024;
+    private static readonly DEFAULT_HIGHWATER = 256 * 1024;
     private readonly subscribers: Set<PassThrough> = new Set();
 
     constructor(
@@ -15,15 +15,11 @@ export class Subscribers {
 
         const cleanup = () => {
             this.subscribers.delete(subscriber);
-            subscriber.removeListener("end", cleanup);
-            subscriber.removeListener("close", cleanup);
-            subscriber.removeListener("error", cleanup);
         };
 
-        subscriber.on("end", cleanup);
-        subscriber.on("close", cleanup);
-        subscriber.on("error", cleanup);
-        subscriber.resume();
+        subscriber.once("close", cleanup);
+        subscriber.once("error", cleanup);
+        subscriber.once("unpipe", cleanup);
 
         return subscriber;
     }
