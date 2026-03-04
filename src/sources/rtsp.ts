@@ -47,10 +47,12 @@ export class Rtsp extends Ffmpeg implements Broadcast {
                 }
             }
         });
+
+        this.child.stdout.resume();
     }
 
     public subscribe(): Readable {
-        const subscriber = new PassThrough({ highWaterMark: 128 * 1024 });
+        const subscriber = new PassThrough({ highWaterMark: 256 * 1024 });
 
         this.subscribers.add(subscriber);
 
