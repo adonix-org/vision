@@ -3,6 +3,8 @@ import { Ffmpeg } from "../spawn/ffmpeg";
 import { Broadcast } from "./broadcast";
 
 export class Rtsp extends Ffmpeg implements Broadcast {
+    private readonly subscribers: Set<PassThrough> = new Set();
+
     constructor(private readonly url: string) {
         super();
     }
@@ -37,8 +39,6 @@ export class Rtsp extends Ffmpeg implements Broadcast {
             }
         });
     }
-
-    private readonly subscribers: Set<PassThrough> = new Set();
 
     public subscribe(): Readable {
         const subscriber = new PassThrough({ highWaterMark: 128 * 1024 });
