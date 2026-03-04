@@ -5,13 +5,15 @@ import { Filename } from "../utils/filename";
 import path from "node:path";
 import { Broadcast } from "../sources/broadcast";
 
+type SupportedFileFormat = "mp4" | "mkv" | "mov" | "ts";
+
 export class Recording extends Ffmpeg {
     private stream: Readable | undefined;
 
     constructor(
         private readonly broadcast: Broadcast,
         private readonly folder: string,
-        private readonly extension: string = "mp4",
+        private readonly format: SupportedFileFormat = "mp4",
     ) {
         super();
     }
@@ -19,10 +21,7 @@ export class Recording extends Ffmpeg {
     protected override args(): string[] {
         const filename = new Filename(this.folder, "video").getFilename();
 
-        const filepath = path.join(
-            this.folder,
-            `${filename}.${this.extension}`,
-        );
+        const filepath = path.join(this.folder, `${filename}.${this.format}`);
 
         const args = [
             "-loglevel",

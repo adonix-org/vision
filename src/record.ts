@@ -17,7 +17,7 @@ const mpv = new MpvViewer(broadcast);
 const recording = new Recording(
     preroll,
     "/Users/tybusby/Camera/recordings",
-    "mp4",
+    "mov",
 );
 
 application.register(broadcast, preroll, mpv);
