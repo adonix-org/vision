@@ -3,6 +3,8 @@ import { Ffmpeg } from "../spawn/ffmpeg";
 import { Broadcast } from "./broadcast";
 
 export class Rtsp extends Ffmpeg implements Broadcast {
+    private readonly subscribers: Set<PassThrough> = new Set();
+
     constructor(private readonly url: string) {
         super();
     }
@@ -31,16 +33,8 @@ export class Rtsp extends Ffmpeg implements Broadcast {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
-        this.child.stdout.on("data", (chunk: Buffer) => {
-            for (const subscriber of this.subscribers) {
-                subscriber.write(chunk);
-            }
-        });
-
         this.child.stdout.resume();
     }
-
-    private readonly subscribers: Set<PassThrough> = new Set();
 
     public subscribe(): Readable {
         const subscriber = new PassThrough({ highWaterMark: 128 * 1024 });
@@ -53,10 +47,13 @@ export class Rtsp extends Ffmpeg implements Broadcast {
             subscriber.removeListener("close", cleanup);
             subscriber.removeListener("error", cleanup);
         };
+
         subscriber.on("end", cleanup);
         subscriber.on("close", cleanup);
         subscriber.on("error", cleanup);
-        subscriber.on("data", () => {});
+        subscriber.resume();
+
+        this.child.stdout.pipe(subscriber);
 
         return subscriber;
     }
