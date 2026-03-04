@@ -63,6 +63,12 @@ export class Recording extends Ffmpeg {
         this.child.stdin.on("error", cleanup);
     }
 
+    protected override async onstop(): Promise<void> {
+        this.child.stdin.end();
+
+        await super.onstop();
+    }
+
     public override toString(): string {
         return `${super.toString()}[Recording]`;
     }
