@@ -46,7 +46,7 @@ export abstract class Executable extends Lifecycle {
 
         console.warn(
             this.toString(),
-            `exited with code ${this._child.exitCode}`,
+            `process exited with code ${this._child.exitCode}`,
         );
 
         this.stop();
