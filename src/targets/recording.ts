@@ -35,6 +35,7 @@ export class Recording extends Ffmpeg {
             "pipe:0",
             "-avoid_negative_ts",
             "make_zero",
+            "-copyts",
             "-c",
             "copy",
             filepath,
