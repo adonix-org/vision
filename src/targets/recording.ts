@@ -11,7 +11,7 @@ export class Recording extends Ffmpeg {
 
     constructor(
         private readonly broadcast: Broadcast,
-        private readonly file: FilePath,
+        private readonly filepath: FilePath,
         private readonly format: SupportedFileFormat = "mp4",
     ) {
         super();
@@ -35,7 +35,7 @@ export class Recording extends Ffmpeg {
             "copy",
             "-f",
             this.format,
-            `${this.file.path}.${this.format}`,
+            `${this.filepath.path}.${this.format}`,
         ];
 
         return args;
@@ -44,7 +44,7 @@ export class Recording extends Ffmpeg {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
-        await fs.mkdir(this.file.dirname, { recursive: true });
+        await fs.mkdir(this.filepath.dirname, { recursive: true });
 
         this.stream = this.broadcast.subscribe();
         this.stream.pipe(this.child.stdin);
