@@ -53,10 +53,8 @@ export class Recording extends Ffmpeg {
         this.stream.pipe(this.child.stdin);
 
         const cleanup = () => {
-            if (this.stream) {
-                this.stream.destroy();
-                this.stream = null;
-            }
+            this.stream?.destroy();
+            this.stream = null;
         };
 
         this.child.stdin.on("close", cleanup);

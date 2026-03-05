@@ -52,10 +52,8 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         this.stream.pipe(this.child.stdin);
 
         const cleanup = () => {
-            if (this.stream) {
-                this.stream.destroy();
-                this.stream = null;
-            }
+            this.stream?.destroy();
+            this.stream = null;
         };
 
         this.child.stdin.on("close", cleanup);
