@@ -1,7 +1,7 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import { ImageFrame, ImageTask } from "..";
-import { FilePath } from "../../file";
+import { FilePath } from "../../paths";
 
 const mimeToExt: Record<string, string> = {
     "image/jpeg": "jpg",

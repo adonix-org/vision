@@ -2,7 +2,7 @@ import { Readable } from "node:stream";
 import { promises as fs } from "node:fs";
 import { Ffmpeg } from "../spawn/ffmpeg";
 import { Broadcast } from "../sources/broadcast";
-import { FilePath } from "../file";
+import { FilePath } from "../paths";
 
 type SupportedFileFormat = "mp4" | "mkv" | "mov" | "ts";
 

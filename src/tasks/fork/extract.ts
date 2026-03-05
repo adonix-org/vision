@@ -3,7 +3,7 @@ import { ImageFrame } from "..";
 import { Workflow } from "../../workflows/workflow";
 import { SaveImage } from "../transfer/save";
 import { Remote } from "../remote/remote";
-import { DatePath } from "../../file/date";
+import { DatePath } from "../../paths/date";
 
 export class Extract extends Workflow {
     constructor(folder: string) {

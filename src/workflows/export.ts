@@ -4,7 +4,7 @@ import { RequiredFilter } from "../tasks/filter/requried";
 import { Remote } from "../tasks/remote/remote";
 import { Watermark } from "../tasks/transform/watermark";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
-import { CategoryPath } from "../file/category";
+import { CategoryPath } from "../paths/category";
 
 export class ExportSubject extends Workflow {
     constructor(

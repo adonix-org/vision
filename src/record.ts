@@ -7,7 +7,7 @@ import { MpvViewer } from "./targets/viewers/mpv";
 
 import { Recording } from "./targets/recording";
 import { PreRoll } from "./targets/preroll";
-import { DatePath } from "./file/date";
+import { DatePath } from "./paths/date";
 
 const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
