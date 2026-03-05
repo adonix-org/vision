@@ -1,9 +1,11 @@
 import { randomBytes } from "node:crypto";
+import { FilePath } from ".";
+import path from "node:path";
 
-export class Filename {
+export class UniqueFile implements FilePath {
     constructor(
-        private readonly directory: string,
-        private readonly name: string,
+        private readonly folder: string,
+        private readonly prefix: string = "file",
     ) {}
 
     protected getTimestamp(): string {
@@ -24,17 +26,21 @@ export class Filename {
     }
 
     protected getPrefix(): string {
-        return this.name
+        return this.prefix
             .replaceAll(/[^ -~]/g, "_")
             .replaceAll(/[/\\?%*:|"<>]/g, "_")
             .trim();
     }
 
-    public getFolder(): string {
-        return this.directory;
+    public get path(): string {
+        return path.join(this.dirname, this.filename);
     }
 
-    public getFilename(): string {
+    public get dirname(): string {
+        return this.folder;
+    }
+
+    public get filename(): string {
         const timestamp = this.getTimestamp();
         const suffix = this.getUnique();
         const prefix = this.getPrefix();
@@ -42,6 +48,6 @@ export class Filename {
     }
 
     public toString(): string {
-        return `[Filename]`;
+        return `[UniqueFile]`;
     }
 }

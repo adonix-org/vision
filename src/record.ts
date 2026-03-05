@@ -7,6 +7,7 @@ import { MpvViewer } from "./targets/viewers/mpv";
 
 import { Recording } from "./targets/recording";
 import { PreRoll } from "./targets/preroll";
+import { DatePath } from "./file/date";
 
 const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
@@ -14,9 +15,10 @@ const broadcast = new Rtsp(C121_RTSP_URL);
 
 const preroll = new PreRoll(broadcast, 5);
 const mpv = new MpvViewer(broadcast);
+
 const recording = new Recording(
     broadcast,
-    "/Users/tybusby/Camera/recordings",
+    new DatePath("/Users/tybusby/Camera/recordings", "video"),
     "mp4",
 );
 
@@ -34,4 +36,3 @@ while (application.running) {
 
     await recording.stop();
 }
-
