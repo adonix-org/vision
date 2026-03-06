@@ -3,6 +3,7 @@ import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Workflow } from "./workflow";
 import { Throttle } from "../tasks/filter/throttle";
 import { ExportSubject } from "./export";
+import { Trail } from "../tasks/transform/trail";
 
 export class Monitor extends Workflow {
     constructor() {
@@ -20,6 +21,7 @@ export class Monitor extends Workflow {
 
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
+        this.addTask(new Trail("orange"));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(animal);
         this.addTask(person);
