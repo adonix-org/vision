@@ -50,9 +50,7 @@ export class ViewerTask extends Executable implements ImageTask {
         await super.onstart();
 
         this.child.stdin.on("error", (err) => {
-            if ("code" in err && err.code === "EPIPE") {
-                console.warn(this.toString(), err.message);
-            } else {
+            if (!("code" in err && err.code === "EPIPE")) {
                 console.error(this.toString(), err);
             }
         });

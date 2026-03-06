@@ -46,9 +46,7 @@ export abstract class Executable extends Lifecycle {
 
         const code = this._child.signalCode ?? this.child.exitCode;
         const message = `process exited with code ${code}`;
-        if (code === 0) {
-            console.info(this.toString(), message);
-        } else {
+        if (code !== 0) {
             console.warn(this.toString(), message);
         }
 
