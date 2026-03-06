@@ -41,6 +41,6 @@ export class Trail implements ImageTask {
     }
 
     public toString(): string {
-        return `[DotHistory]`;
+        return `[Trail]`;
     }
 }
