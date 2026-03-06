@@ -65,6 +65,6 @@ export class Label implements Stage {
     }
 
     public toString(): string {
-        return `[Label: color=${this.color}${this.inactiveColor ? `, inactiveColor=${this.inactiveColor}` : ""}]`;
+        return "[Label]";
     }
 }
