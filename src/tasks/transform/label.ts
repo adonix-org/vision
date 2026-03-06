@@ -10,8 +10,8 @@ export class Label implements ImageTask {
     private readonly textFillColor = "white";
 
     constructor(
-        private readonly boxColor: string = "red",
-        private readonly fontSize: number = 16,
+        private readonly boxColor: string = "yellow",
+        private readonly fontSize: number = 36,
     ) {
         this.textFont = `${this.fontSize}px sans-serif`;
     }

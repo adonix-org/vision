@@ -17,8 +17,8 @@ export class Motion extends Agent {
         this.register(viewer);
 
         this.addTask(new Remote("mega"));
-        this.addTask(new Label("yellow", 36));
-        this.addTask(new Trail("orange"));
+        this.addTask(new Label());
+        this.addTask(new Trail());
         this.addTask(new Watermark("LiveImage"));
         this.addTask(viewer);
     }

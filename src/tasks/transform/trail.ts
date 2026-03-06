@@ -5,7 +5,7 @@ export class Trail implements ImageTask {
     private readonly history: { x: number; y: number }[] = [];
 
     constructor(
-        private readonly dotColor: string = "lime",
+        private readonly dotColor: string = "orange",
         private readonly radius: number = 3,
         private readonly maxPoints: number = 500,
     ) {}
