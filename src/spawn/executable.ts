@@ -44,10 +44,13 @@ export abstract class Executable extends Lifecycle {
     private readonly watch = (): void => {
         if (this._child === null) return;
 
-        console.warn(
-            this.toString(),
-            `process exited with code ${this._child.exitCode}`,
-        );
+        const code = this._child.signalCode ?? this.child.exitCode;
+        const message = `process exited with code ${code}`;
+        if (code === 0) {
+            console.info(this.toString(), message);
+        } else {
+            console.warn(this.toString(), message);
+        }
 
         this.stop();
         this._child = null;
