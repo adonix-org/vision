@@ -18,6 +18,7 @@ export class Label implements Stage {
 
     public async draw(frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
         const ctx = canvas.getContext("2d");
+
         ctx.font = this.textFont;
 
         for (const ann of frame.annotations) {

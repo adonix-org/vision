@@ -14,16 +14,16 @@ export class Trail implements Stage {
     public async draw(frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
         const ctx = canvas.getContext("2d");
 
-        if (frame.annotations && frame.annotations.length > 0) {
-            for (const ann of frame.annotations) {
+        frame.annotations
+            .filter((ann) => ann.active)
+            .forEach((ann) => {
                 const centerX = ann.x + ann.width / 2;
                 const centerY = ann.y + ann.height / 2;
                 this.history.push({ x: centerX, y: centerY });
-            }
+            });
 
-            while (this.history.length > this.maxPoints) {
-                this.history.shift();
-            }
+        while (this.history.length > this.maxPoints) {
+            this.history.shift();
         }
 
         ctx.fillStyle = this.dotColor;
