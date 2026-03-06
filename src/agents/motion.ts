@@ -6,6 +6,8 @@ import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/transform/label";
 import { Trail } from "../tasks/transform/trail";
 import { Watermark } from "../tasks/transform/watermark";
+import { Transform } from "../tasks/transform";
+import { Timer } from "../tasks/observe/timer";
 
 export class Motion extends Agent {
     constructor() {
@@ -18,9 +20,13 @@ export class Motion extends Agent {
         this.register(viewer);
 
         this.addTask(new Remote("mega"));
-        this.addTask(new Label());
-        this.addTask(new Trail());
-        this.addTask(new Watermark("LiveImage"));
+
+        const transform = new Transform();
+        transform.add(new Label());
+        transform.add(new Trail());
+        transform.add(new Watermark("LiveImage"));
+
+        this.addTask(new Timer(transform, 10_000));
         this.addTask(viewer);
     }
 

@@ -1,7 +1,8 @@
-import { ImageFrame, ImageTask } from "..";
-import { createCanvas, loadImage } from "canvas";
+import { Stage } from ".";
+import { ImageFrame } from "..";
+import { Canvas } from "canvas";
 
-export class Label implements ImageTask {
+export class Label implements Stage {
     private readonly lineWidth = 2;
     private readonly textFont: string;
     private readonly textAlign: CanvasTextAlign = "left";
@@ -16,16 +17,8 @@ export class Label implements ImageTask {
         this.textFont = `${this.fontSize}px sans-serif`;
     }
 
-    public async process(frame: ImageFrame): Promise<ImageFrame | null> {
-        if (!frame.annotations || frame.annotations.length === 0) {
-            return frame;
-        }
-
-        const img = await loadImage(frame.image.buffer);
-        const canvas = createCanvas(img.width, img.height);
+    public async transform(frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
         const ctx = canvas.getContext("2d");
-
-        ctx.drawImage(img, 0, 0);
 
         ctx.strokeStyle = this.boxColor;
         ctx.lineWidth = this.lineWidth;
@@ -55,9 +48,7 @@ export class Label implements ImageTask {
             ctx.fillText(text, centerX, topY);
         }
 
-        frame.image.buffer = canvas.toBuffer("image/jpeg", { quality: 0.95 });
-
-        return frame;
+        return canvas;
     }
 
     public toString(): string {

@@ -4,6 +4,7 @@ import { Workflow } from "./workflow";
 import { Throttle } from "../tasks/filter/throttle";
 import { ExportSubject } from "./export";
 import { Trail } from "../tasks/transform/trail";
+import { Transform } from "../tasks/transform";
 
 export class Monitor extends Workflow {
     constructor() {
@@ -21,7 +22,11 @@ export class Monitor extends Workflow {
 
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
-        this.addTask(new Trail("orange"));
+
+        const transform = new Transform();
+        transform.add(new Trail("orange"));
+        this.addTask(transform);
+
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(animal);
         this.addTask(person);

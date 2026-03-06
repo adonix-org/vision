@@ -1,7 +1,8 @@
-import { ImageFrame, ImageTask } from "..";
-import { createCanvas, loadImage } from "canvas";
+import { Stage } from ".";
+import { ImageFrame } from "..";
+import { Canvas } from "canvas";
 
-export class Trail implements ImageTask {
+export class Trail implements Stage {
     private readonly history: { x: number; y: number }[] = [];
 
     constructor(
@@ -10,12 +11,8 @@ export class Trail implements ImageTask {
         private readonly maxPoints: number = 500,
     ) {}
 
-    public async process(frame: ImageFrame): Promise<ImageFrame | null> {
-        const img = await loadImage(frame.image.buffer);
-        const canvas = createCanvas(img.width, img.height);
+    public async transform(frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
         const ctx = canvas.getContext("2d");
-
-        ctx.drawImage(img, 0, 0);
 
         if (frame.annotations && frame.annotations.length > 0) {
             for (const ann of frame.annotations) {
@@ -36,8 +33,7 @@ export class Trail implements ImageTask {
             ctx.fill();
         }
 
-        frame.image.buffer = canvas.toBuffer("image/jpeg", { quality: 0.95 });
-        return frame;
+        return canvas;
     }
 
     public toString(): string {
