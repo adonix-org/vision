@@ -1,6 +1,6 @@
 import { ImageFrame, ImageTask } from "..";
 
-export class Ignore implements ImageTask {
+export class CenterPointFilter implements ImageTask {
     private readonly r2 = this.radius * this.radius;
 
     constructor(

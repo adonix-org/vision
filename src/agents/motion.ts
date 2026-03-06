@@ -7,10 +7,11 @@ import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
 import { Watermark } from "../tasks/draw/watermark";
 import { Drawing } from "../tasks/draw";
-import { Ignore } from "../tasks/filter/ignore";
 import { Throttle } from "../tasks/filter/throttle";
 import { Record } from "../tasks/observe/record";
 import { PreRoll } from "../targets/preroll";
+import { CenterPointFilter } from "../tasks/filter/centerpoint";
+import { ConfidenceFilter } from "../tasks/filter/confidence";
 
 export class Motion extends Agent {
     constructor() {
@@ -33,11 +34,13 @@ export class Motion extends Agent {
 
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
-        this.addTask(new Ignore(1740, 562, 20));
+        this.addTask(new ConfidenceFilter(0.4));
+        this.addTask(new CenterPointFilter(1740, 562, 20));
         this.addTask(drawing);
         this.addTask(viewer);
 
-        this.addTask(new Record(preroll, filepath, 2, "vehicle"));
+        this.addTask(new Record(preroll, filepath, 5, "person"));
+        this.addTask(new Record(preroll, filepath, 10, "animal"));
     }
 
     public override toString(): string {
