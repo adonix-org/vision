@@ -10,13 +10,10 @@ const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
 export class C121 extends Lifecycle implements AgentSource {
     private readonly camera = new Rtsp(C121_RTSP_URL);
-    private readonly viewer = new MpvViewer(
-        this.camera,
-        "C121 - Front Yard",
-    );
+    private readonly viewer = new MpvViewer(this.camera, "C121 - Front Yard");
     private readonly decoder = new StreamDecoder(
         this.camera,
-        new LiveDecoder(1),
+        new LiveDecoder(15),
         this.fps,
     );
 

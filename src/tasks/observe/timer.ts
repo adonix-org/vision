@@ -15,8 +15,8 @@ export class Timer implements ImageTask {
 
             const avg = this.duration / this.count;
             console.info(
+                this.toString(),
                 `${avg.toFixed(3)}ms called ${this.count} times`,
-                task.toString(),
             );
             this.count = 0;
             this.duration = 0;
@@ -35,6 +35,6 @@ export class Timer implements ImageTask {
     }
 
     public toString(): string {
-        return `[Profiler]${this.task.toString()}`;
+        return `[⏱️ Timer]${this.task.toString()}`;
     }
 }
