@@ -61,8 +61,6 @@ export class Recording extends Ffmpeg {
     protected override async onstop(): Promise<void> {
         await super.onstop();
 
-        await this.waitForIFrame(this.stream!);
-
         this.stream?.unpipe();
         this.stream?.destroy();
         this.stream = null;
@@ -70,33 +68,6 @@ export class Recording extends Ffmpeg {
         this.child.stdin.end();
 
         await this.quit(5_000);
-    }
-
-    private waitForIFrame(stream: Readable): Promise<void> {
-        return new Promise((resolve) => {
-            const onData = (chunk: Buffer) => {
-                // Scan the chunk for NAL unit type 0x65 (IDR/I-frame)
-                for (let i = 0; i < chunk.length - 4; i++) {
-                    // Look for start code 0x00 0x00 0x00 0x01
-                    if (
-                        chunk[i] === 0x00 &&
-                        chunk[i + 1] === 0x00 &&
-                        chunk[i + 2] === 0x00 &&
-                        chunk[i + 3] === 0x01
-                    ) {
-                        const nalType = chunk[i + 4]! & 0x1f;
-                        if (nalType === 5) {
-                            // I-frame found
-                            stream.off("data", onData);
-                            resolve();
-                            return;
-                        }
-                    }
-                }
-            };
-
-            stream.on("data", onData);
-        });
     }
 
     public override toString(): string {

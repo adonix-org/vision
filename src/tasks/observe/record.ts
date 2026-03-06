@@ -1,0 +1,50 @@
+import { ImageFrame, ImageTask } from "..";
+import { CategoryPath } from "../../paths/category";
+import { Broadcast } from "../../sources/broadcast";
+import { Recording } from "../../targets/recording";
+
+export class Record implements ImageTask {
+    private timerId: NodeJS.Timeout | undefined;
+
+    private readonly filepath = new CategoryPath(
+        this.folder,
+        this.category,
+        this.category,
+    );
+
+    private readonly recording = new Recording(
+        this.broadcast,
+        this.filepath,
+        "mp4",
+    );
+
+    constructor(
+        private readonly broadcast: Broadcast,
+        private readonly folder: string,
+        private readonly seconds: number,
+        private readonly category: string,
+    ) {}
+
+    public async process(frame: ImageFrame): Promise<ImageFrame | null> {
+        const activity = frame.annotations.some(
+            (ann) => ann.active && ann.label === this.category,
+        );
+
+        if (activity) {
+            await this.recording.start();
+
+            if (this.timerId) clearTimeout(this.timerId);
+
+            this.timerId = setTimeout(async () => {
+                this.timerId = undefined;
+                await this.recording.stop();
+            }, this.seconds * 1_000);
+        }
+
+        return frame;
+    }
+
+    public toString(): string {
+        return "[Record]";
+    }
+}
