@@ -9,7 +9,7 @@ import { Drawing } from "../tasks/draw";
 import { Throttle } from "../tasks/filter/throttle";
 import { Record } from "../tasks/transfer/record";
 import { PreRoll } from "../targets/preroll";
-import { CenterPointFilter } from "../tasks/filter/centerpoint";
+import { PointFilter } from "../tasks/filter/point";
 import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { LiveDecoder } from "../sources/decoders/live";
@@ -45,14 +45,14 @@ export class Motion extends Agent {
 
         this.addTask(new Throttle(fps));
         this.addTask(new Remote("mega"));
-        this.addTask(new ConfidenceFilter(0.4));
-        this.addTask(new Ignore("vehicle"));
-        this.addTask(new CenterPointFilter(1740, 562, 20));
+        this.addTask(new ConfidenceFilter(0.35));
+        this.addTask(new Ignore("vehicles"));
+        this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
-        this.addTask(viewer);
         this.addTask(animal);
         this.addTask(person);
         this.addTask(vehicle);
+        this.addTask(viewer);
     }
 
     public override toString(): string {

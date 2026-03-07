@@ -1,12 +1,13 @@
 import { ImageFrame, ImageTask } from "..";
 
-export class CenterPointFilter implements ImageTask {
+export class PointFilter implements ImageTask {
     private readonly r2 = this.radius * this.radius;
 
     constructor(
         private readonly x: number,
         private readonly y: number,
         private readonly radius: number,
+        private readonly tag: string = "point",
     ) {}
 
     public async process(frame: ImageFrame): Promise<ImageFrame | null> {
@@ -24,7 +25,7 @@ export class CenterPointFilter implements ImageTask {
                 return {
                     ...annotation,
                     active: false,
-                    reason: "inside ignore radius",
+                    reason: `ignore ${this.tag}`,
                 };
             }
 
@@ -38,6 +39,6 @@ export class CenterPointFilter implements ImageTask {
     }
 
     public toString(): string {
-        return "[CenterPointFilter]";
+        return "[PointFilter]";
     }
 }

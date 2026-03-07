@@ -7,12 +7,13 @@ import { Camera } from "./sources/camera";
 import { MpvViewer } from "./targets/mpv";
 
 const url = process.env.C121_RTSP_URL!;
-const c121 = new Camera("c121", url);
+const camera = new Camera("c121", url);
 
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
-const agent = new Motion(c121, folder, 1);
+const agent = new Motion(camera, folder, 1);
+const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 
-const viewer = new MpvViewer(c121, `LiveMotion - ${c121.name}`);
+camera.register(viewer);
+camera.register(agent);
 
-c121.register(agent, viewer);
-application.register(c121).start();
+application.register(camera).start();
