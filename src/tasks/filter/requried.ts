@@ -1,6 +1,6 @@
 import { ImageFrame, ImageTask } from "..";
 
-export class RequiredFilter implements ImageTask {
+export class Required implements ImageTask {
     private readonly labels: Set<string>;
 
     constructor(label: string, ...labels: string[]) {

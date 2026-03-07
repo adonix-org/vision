@@ -1,6 +1,6 @@
 import { SaveImage } from "../tasks/transfer/save";
 import { Workflow } from "./workflow";
-import { RequiredFilter } from "../tasks/filter/requried";
+import { Required } from "../tasks/filter/requried";
 import { Watermark } from "../tasks/draw/watermark";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { CategoryPath } from "../paths/category";
@@ -20,7 +20,7 @@ export class ExportSubject extends Workflow {
         const drawing = new Drawing(new Label(), new Watermark("ActiveImage"));
 
         this.addTask(new ConfidenceFilter(threshold, label));
-        this.addTask(new RequiredFilter(label));
+        this.addTask(new Required(label));
         this.addTask(drawing);
         this.addTask(new SaveImage(target));
     }
