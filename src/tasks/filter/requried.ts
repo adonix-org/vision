@@ -17,6 +17,6 @@ export class Required implements ImageTask {
     }
 
     public toString(): string {
-        return `[Required: ${[...this.labels].join(", ")}]`;
+        return `[Required]`;
     }
 }
