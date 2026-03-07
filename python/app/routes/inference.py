@@ -26,12 +26,12 @@ def run_model(frame: ImageFrame, model_name: Literal["mega", "yolo"]) -> ImageFr
 
     for r in results:
         for box in r.boxes:
-            label = model.names[int(box.cls[0])]
+            category = model.names[int(box.cls[0])]
             x1, y1, x2, y2 = box.xyxy[0].tolist()
 
             frame.annotations.append(
                 Annotation(
-                    label=label,
+                    category=category,
                     x=int(x1),
                     y=int(y1),
                     width=int(x2 - x1),

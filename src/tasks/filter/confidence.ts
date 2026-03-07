@@ -10,7 +10,7 @@ export class ConfidenceFilter implements ImageTask {
         const annotations = frame.annotations.map((annotation) => {
             if (!annotation.active) return annotation;
 
-            if (this.label && annotation.label !== this.label)
+            if (this.label && annotation.category !== this.label)
                 return annotation;
 
             const confidence = annotation.confidence ?? 0;

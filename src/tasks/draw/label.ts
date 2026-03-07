@@ -36,8 +36,8 @@ export class Label implements Stage {
 
             const confidence = ann.confidence ?? 0;
             const text = ann.confidence
-                ? `${ann.label} • ${Math.round(confidence * 100)}%`
-                : ann.label;
+                ? `${ann.category} • ${Math.round(confidence * 100)}%`
+                : ann.category;
 
             const centerX = ann.x + ann.width / 2;
             const topY = ann.y - 2;

@@ -37,7 +37,7 @@ export class Record extends Lifecycle implements ImageTask {
 
     public async process(frame: ImageFrame): Promise<ImageFrame | null> {
         const activity = frame.annotations.some(
-            (ann) => ann.active && ann.label === this.category,
+            (ann) => ann.active && ann.category === this.category,
         );
 
         if (activity) {

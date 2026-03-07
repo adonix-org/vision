@@ -10,7 +10,7 @@ export class Required implements ImageTask {
     public async process(frame: ImageFrame): Promise<ImageFrame | null> {
         const present = frame.annotations.some(
             (annotation) =>
-                annotation.active && this.labels.has(annotation.label),
+                annotation.active && this.labels.has(annotation.category),
         );
 
         return present ? frame : null;

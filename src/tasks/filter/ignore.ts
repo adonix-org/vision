@@ -7,7 +7,7 @@ export class Ignore implements ImageTask {
         const annotations = frame.annotations.map((annotation) => {
             if (!annotation.active) return annotation;
 
-            if (annotation.label === this.category) {
+            if (annotation.category === this.category) {
                 annotation.reason = `ignore ${this.category}`;
                 annotation.active = false;
             }
