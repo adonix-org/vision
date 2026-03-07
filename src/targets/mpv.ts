@@ -1,4 +1,4 @@
-import { Broadcast } from "../../sources/broadcast";
+import { Broadcast } from "../sources/broadcast";
 import { Viewer } from "./viewer";
 
 export class MpvViewer extends Viewer {
@@ -17,6 +17,7 @@ export class MpvViewer extends Viewer {
         const args = [
             "--cache=no",
             "--osc=no",
+            "--untimed",
             "--input-terminal=no",
             "--no-input-default-bindings",
             `--title=${this.title}`,

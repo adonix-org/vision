@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
-import { Broadcast } from "../../sources/broadcast";
-import { Executable } from "../../spawn/executable";
+import { Executable } from "../spawn/executable";
+import { Broadcast } from "../sources/broadcast";
 
 export abstract class Viewer extends Executable {
     private stream: Readable | null = null;
@@ -31,7 +31,7 @@ export abstract class Viewer extends Executable {
 
         this.end();
 
-        await this.quit(5_000);
+        await this.quit(30_000);
     }
 
     public override toString(): string {

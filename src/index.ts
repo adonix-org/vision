@@ -4,7 +4,7 @@ import "./logging";
 import { application } from "./application";
 import { Motion } from "./agents/motion";
 import { Camera } from "./sources/camera";
-import { MpvViewer } from "./targets/viewers/mpv";
+import { MpvViewer } from "./targets/mpv";
 
 const url = process.env.C121_RTSP_URL!;
 const c121 = new Camera("c121", url);

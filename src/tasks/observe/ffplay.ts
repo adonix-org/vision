@@ -1,8 +1,8 @@
 import { ImageFrame, ImageTask } from "..";
 import { Executable } from "../../spawn/executable";
 
-export class ViewerTask extends Executable implements ImageTask {
-    constructor(private readonly title = "Task Viewer") {
+export class FfplayTask extends Executable implements ImageTask {
+    constructor(private readonly title = "Ffplay Viewer") {
         super();
     }
 

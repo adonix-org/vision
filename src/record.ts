@@ -2,7 +2,7 @@ import "dotenv/config";
 import "./logging";
 
 import { application } from "./application";
-import { MpvViewer } from "./targets/viewers/mpv";
+import { MpvViewer } from "./targets/mpv";
 
 import { Recording } from "./targets/recording";
 import { PreRoll } from "./targets/preroll";

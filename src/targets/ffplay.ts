@@ -1,12 +1,9 @@
-import { Broadcast } from "../../sources/broadcast";
+import { Broadcast } from "../sources/broadcast";
 import { Viewer } from "./viewer";
-
-type FfplayInputFormat = "mjpeg" | "mpegts";
 
 export class FfplayViewer extends Viewer {
     constructor(
         broadcast: Broadcast,
-        private readonly format: FfplayInputFormat,
         private readonly title: string = "Publisher",
     ) {
         super(broadcast);
@@ -20,13 +17,26 @@ export class FfplayViewer extends Viewer {
         const args = [
             "-loglevel",
             "quiet",
+            "-fflags",
+            "nobuffer",
+            "-flags",
+            "low_delay",
+            "-analyzeduration",
+            "0",
+            "-vf",
+            "setpts=0",
+            "-sync",
+            "video",
+            "-framedrop",
             "-f",
-            this.format,
+            "mpegts",
             "-i",
             "pipe:0",
+            "-autoexit",
             "-window_title",
             this.title,
         ];
+
         return args;
     }
 
