@@ -35,6 +35,7 @@ export class ImageViewer extends Executable implements ImageTask {
             "-window_title",
             this.title,
         ];
+
         return args;
     }
 

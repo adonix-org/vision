@@ -1,5 +1,5 @@
 import { ImageFrame } from "../../tasks";
-import { JpegDecoder } from "./formats";
+import { JpegDecoder } from "./jpeg";
 
 export class FixedFpsDecoder extends JpegDecoder {
     private readonly frameDuration: number;

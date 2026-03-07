@@ -16,7 +16,7 @@ export class MetaData implements ImageTask {
         return this.frames;
     }
 
-    toString(): string {
+    public toString(): string {
         return `[MetaData]`;
     }
 }

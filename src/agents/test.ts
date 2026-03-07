@@ -3,7 +3,7 @@ import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { LiveDecoder } from "../sources/decoders/live";
 import { EncoderTask } from "../tasks/transfer/encoder";
-import { ImageViewer } from "../tasks/observe/ffplay";
+import { ImageViewer } from "../tasks/observe/image";
 import { FfplayViewer } from "../targets/ffplay";
 import { MpvViewer } from "../targets/mpv";
 

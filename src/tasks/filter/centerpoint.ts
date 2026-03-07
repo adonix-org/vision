@@ -38,6 +38,6 @@ export class CenterPointFilter implements ImageTask {
     }
 
     public toString(): string {
-        return "[Ignore]";
+        return "[CenterPointFilter]";
     }
 }

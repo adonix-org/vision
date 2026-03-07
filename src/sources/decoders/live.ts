@@ -1,5 +1,5 @@
 import { ImageFrame } from "../../tasks";
-import { JpegDecoder } from "./formats";
+import { JpegDecoder } from "./jpeg";
 
 export class LiveDecoder extends JpegDecoder {
     protected onimage(buffer: Buffer): ImageFrame {

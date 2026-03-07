@@ -1,7 +1,7 @@
 import { Agent } from "./agent";
 import { Remote } from "../tasks/remote/remote";
 import { PyServer } from "../spawn/pyserver";
-import { ImageViewer } from "../tasks/observe/ffplay";
+import { ImageViewer } from "../tasks/observe/image";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
 import { Watermark } from "../tasks/draw/watermark";
@@ -14,6 +14,7 @@ import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { LiveDecoder } from "../sources/decoders/live";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
+import { Ignore } from "../tasks/filter/ignore";
 
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
@@ -45,6 +46,7 @@ export class Motion extends Agent {
         this.addTask(new Throttle(fps));
         this.addTask(new Remote("mega"));
         this.addTask(new ConfidenceFilter(0.4));
+        this.addTask(new Ignore("vehicle"));
         this.addTask(new CenterPointFilter(1740, 562, 20));
         this.addTask(drawing);
         this.addTask(viewer);
