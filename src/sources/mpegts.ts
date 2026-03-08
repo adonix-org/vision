@@ -106,7 +106,7 @@ export class MpegTsBuffer extends Lifecycle {
                 offset = headerIdx + 1;
             }
 
-            prevTail = buf.subarray(Math.max(0, buf.length - 3));
+            prevTail = buf.subarray(Math.max(0, buf.length - 4));
         }
 
         return -1;
