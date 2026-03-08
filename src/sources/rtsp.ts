@@ -40,6 +40,10 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
         return args;
     }
 
+    public subscribe(): Readable {
+        return this.subscribers.subscribe();
+    }
+
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
@@ -52,10 +56,6 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
         await super.onstop();
 
         await this.quit();
-    }
-
-    public subscribe(): Readable {
-        return this.subscribers.subscribe();
     }
 
     public override toString(): string {

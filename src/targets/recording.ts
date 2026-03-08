@@ -8,6 +8,7 @@ type SupportedFileFormat = "mp4" | "mkv" | "mov" | "ts";
 
 export class Recording extends Ffmpeg {
     private stream: Readable | null = null;
+    public timestamp: number | undefined;
 
     constructor(
         private readonly broadcast: Broadcast,
@@ -46,7 +47,7 @@ export class Recording extends Ffmpeg {
 
         await fs.mkdir(this.filepath.dirname, { recursive: true });
 
-        this.stream = this.broadcast.subscribe();
+        this.stream = this.broadcast.subscribe(this.timestamp);
         this.stream.pipe(this.child.stdin);
 
         const cleanup = () => {
@@ -60,6 +61,8 @@ export class Recording extends Ffmpeg {
 
     protected override async onstop(): Promise<void> {
         await super.onstop();
+
+        this.timestamp = undefined;
 
         this.stream?.unpipe();
         this.stream?.destroy();

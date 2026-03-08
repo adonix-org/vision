@@ -23,7 +23,8 @@ export class Record extends Lifecycle implements ImageTask {
     constructor(
         private readonly broadcast: Broadcast,
         private readonly folder: string,
-        private readonly seconds: number,
+        private readonly preroll: number,
+        private readonly postroll: number,
         private readonly category: string,
     ) {
         super();
@@ -48,6 +49,9 @@ export class Record extends Lifecycle implements ImageTask {
                     frame.image.buffer,
                 );
 
+                this.recording.timestamp =
+                    frame.timestamp - this.preroll * 1000;
+
                 await this.recording.start();
             }
 
@@ -56,7 +60,7 @@ export class Record extends Lifecycle implements ImageTask {
             this.timerId = setTimeout(async () => {
                 this.timerId = undefined;
                 await this.recording.stop();
-            }, this.seconds * 1_000);
+            }, this.postroll * 1_000);
         }
 
         return frame;

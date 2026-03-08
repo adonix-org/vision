@@ -5,7 +5,7 @@ export class LiveDecoder extends JpegDecoder {
     protected onimage(buffer: Buffer): ImageFrame {
         return {
             image: { buffer, contentType: "image/jpeg" },
-            seek: Date.now() / 1000,
+            timestamp: Date.now(),
             version: 1,
             annotations: [],
         };

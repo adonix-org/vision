@@ -19,19 +19,17 @@ import { Ignore } from "../tasks/filter/ignore";
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
         const viewer = new ImageViewer("LiveMotion");
-        const long = new PreRoll(broadcast, 10.5);
-        const short = new PreRoll(broadcast, 3);
+        const preroll = new PreRoll(broadcast, 10);
 
-        const animal = new Record(long, folder, 10.5, "animal");
-        const person = new Record(long, folder, 5, "person");
-        const vehicle = new Record(short, folder, 2.5, "vehicle");
+        const animal = new Record(preroll, folder, 10, 10, "animal");
+        const person = new Record(preroll, folder, 5, 5, "person");
+        const vehicle = new Record(preroll, folder, 5, 5, "vehicle");
 
         const decoder = new StreamDecoder(broadcast, new LiveDecoder(15), fps);
         super(decoder);
 
         this.register(new PyServer());
-        this.register(short);
-        this.register(long);
+        this.register(preroll);
         this.register(viewer);
         this.register(animal);
         this.register(person);
@@ -46,7 +44,7 @@ export class Motion extends Agent {
         this.addTask(new Throttle(fps));
         this.addTask(new Remote("mega"));
         this.addTask(new ConfidenceFilter(0.35));
-        this.addTask(new Ignore("vehicle"));
+        this.addTask(new Ignore("vehicles"));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
