@@ -31,7 +31,7 @@ export abstract class Viewer extends Executable {
 
         this.end();
 
-        await this.quit(30_000);
+        await this.quit(5_000);
     }
 
     public override toString(): string {
