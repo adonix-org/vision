@@ -2,18 +2,14 @@ import { Readable } from "node:stream";
 import { Lifecycle } from "../lifecycle";
 import { Broadcast } from "../sources/broadcast";
 import { Subscribers } from "../sources/subscribers";
-
-interface TimedBuffer {
-    chunk: Buffer;
-    timestamp: number;
-}
+import { MpegTsBuffer } from "../sources/mpegts";
 
 export class PreRoll extends Lifecycle implements Broadcast {
-    private readonly preroll: TimedBuffer[] = [];
-    private upstream: Readable | undefined;
+    private upstream: Readable | null = null;
+
+    public buffer: MpegTsBuffer;
 
     private readonly subscribers;
-    private readonly maxAgeMs: number;
 
     constructor(
         private readonly broadcast: Broadcast,
@@ -22,8 +18,11 @@ export class PreRoll extends Lifecycle implements Broadcast {
     ) {
         super();
 
-        this.maxAgeMs = 1000 * seconds;
+        const maxAgeMs = 1000 * seconds;
         this.subscribers = new Subscribers(seconds * kbps * 1024);
+
+        this.buffer = new MpegTsBuffer(broadcast, maxAgeMs);
+        this.register(this.buffer);
     }
 
     public get name(): string {
@@ -37,14 +36,12 @@ export class PreRoll extends Lifecycle implements Broadcast {
             return subscriber;
         }
 
-        for (const entry of this.preroll) {
-            if (entry.timestamp < timestamp) continue;
-
-            const free = subscriber.write(entry.chunk);
+        for (const chunk of this.buffer.buffer(timestamp)) {
+            const free = subscriber.write(chunk);
             if (!free) {
                 console.warn(
                     this.toString(),
-                    `backpressure detected sending preroll`,
+                    "backpressure detected sending preroll",
                 );
             }
         }
@@ -52,55 +49,13 @@ export class PreRoll extends Lifecycle implements Broadcast {
         return subscriber;
     }
 
-    public purge(): void {
-        if (this.preroll.length === 0) return;
-
-        let end = 0;
-        const cutoffMs = Date.now() - this.maxAgeMs;
-
-        for (const entry of this.preroll) {
-            if (entry.timestamp >= cutoffMs) break;
-            end++;
-        }
-
-        this.preroll.splice(0, end);
-    }
-
-    public get duration(): number {
-        const oldest = this.preroll[0];
-        const newest = this.preroll[this.preroll.length - 1];
-        if (!oldest || !newest) return 0;
-
-        return newest.timestamp - oldest.timestamp;
-    }
-
-    public get size(): number {
-        let bytes = 0;
-        for (const entry of this.preroll) {
-            bytes += entry.chunk.length;
-        }
-        return bytes;
-    }
-
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
-        this.preroll.length = 0;
-
         this.upstream = this.broadcast.subscribe();
-
-        this.upstream.on("data", (chunk: Buffer) => {
-            this.preroll.push({ chunk, timestamp: Date.now() });
+        this.upstream.on("data", (chunk) => {
             this.subscribers.send(chunk);
-
-            this.purge();
         });
-    }
-
-    protected override async onstop(): Promise<void> {
-        await super.onstop();
-
-        this.preroll.length = 0;
     }
 
     public override toString(): string {

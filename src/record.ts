@@ -2,7 +2,7 @@ import "dotenv/config";
 import "./logging";
 
 import { application } from "./application";
-import { MpvViewer } from "./targets/mpv";
+// import { MpvViewer } from "./targets/mpv";
 
 import { Recording } from "./targets/recording";
 import { PreRoll } from "./targets/preroll";
@@ -14,7 +14,7 @@ const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 const broadcast = new Camera("c121", C121_RTSP_URL);
 
 const preroll = new PreRoll(broadcast, 10);
-const mpv = new MpvViewer(broadcast);
+// const mpv = new MpvViewer(broadcast);
 
 const recording = new Recording(
     preroll,
@@ -22,16 +22,23 @@ const recording = new Recording(
     "mp4",
 );
 
-broadcast.register(preroll, mpv);
+broadcast.register(preroll);
 
 application.register(broadcast);
+
 await application.start();
 
-await new Promise((r) => setTimeout(r, 15_000));
+console.info(preroll.buffer.duration, preroll.buffer.size);
+await new Promise((r) => setTimeout(r, 10_000));
+console.info(preroll.buffer.duration, preroll.buffer.size);
 
-console.info(preroll.duration, preroll.size);
+recording.timestamp = Date.now() - 5_000;
 await recording.start();
-
-await new Promise((r) => setTimeout(r, 5_000));
-
+await new Promise((r) => setTimeout(r, 100));
 await recording.stop();
+
+while (true) {
+    await new Promise((r) => setTimeout(r, 5_000));
+
+    console.info(preroll.buffer.duration, preroll.buffer.size);
+}
