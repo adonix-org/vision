@@ -44,7 +44,7 @@ export class MpegTsBuffer extends Lifecycle {
         const newest = this._buffer[this._buffer.length - 1];
         if (!oldest || !newest) return 0;
 
-        return newest.timestamp - oldest.timestamp;
+        return Math.max(0, newest.timestamp - oldest.timestamp);
     }
 
     public get size(): number {
@@ -64,7 +64,7 @@ export class MpegTsBuffer extends Lifecycle {
             end = this.keyframe(this.index(cutoff));
         }
 
-        this._buffer.splice(0, end + 1);
+        this._buffer.splice(0, end);
     }
 
     private index(cutoff?: number): number {
@@ -91,10 +91,13 @@ export class MpegTsBuffer extends Lifecycle {
 
             let offset = 0;
             while (true) {
-                const start = scan.indexOf(MpegTsBuffer.NAL_UNIT_START, offset);
-                if (start === -1) break;
+                const nalStart = scan.indexOf(
+                    MpegTsBuffer.NAL_UNIT_START,
+                    offset,
+                );
+                if (nalStart === -1) break;
 
-                const headerIdx = start + 4;
+                const headerIdx = nalStart + 4;
                 if (headerIdx >= scan.length) break;
 
                 const nalType = scan[headerIdx]! & 0x1f;
