@@ -49,8 +49,7 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     public subscribe(): Readable {
         const subscriber = this.subscribers.subscribe();
 
-        const buffer = this.keyframes.buffer();
-        for (const chunk of buffer) {
+        for (const chunk of this.keyframes.buffer()) {
             subscriber.write(chunk);
         }
 

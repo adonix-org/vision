@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import { ImageFrame, ImageTask } from "..";
 import { CategoryPath } from "../../paths/category";
 import { Broadcast } from "../../sources/broadcast";

@@ -29,14 +29,10 @@ export class PreRoll extends Lifecycle implements Broadcast {
         return `${this.broadcast.name}:preroll`;
     }
 
-    public subscribe(timestamp?: number): Readable {
+    public subscribe(cutoff: number): Readable {
         const subscriber = this.subscribers.subscribe();
 
-        if (timestamp === undefined) {
-            return subscriber;
-        }
-
-        for (const chunk of this.buffer.buffer(timestamp)) {
+        for (const chunk of this.buffer.buffer(cutoff)) {
             const free = subscriber.write(chunk);
             if (!free) {
                 console.warn(
