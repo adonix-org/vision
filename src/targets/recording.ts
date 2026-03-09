@@ -23,7 +23,6 @@ export class Recording extends Ffmpeg {
         const args = [];
         args.push("-loglevel", "fatal");
         args.push("-y");
-        args.push("-fflags", "+genpts+igndts");
         args.push("-f", "mpegts");
         args.push("-i", "pipe:0");
         args.push("-avoid_negative_ts", "make_zero");
