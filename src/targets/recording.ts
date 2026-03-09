@@ -66,7 +66,7 @@ export class Recording extends Ffmpeg {
         this.stream?.destroy();
         this.stream = null;
 
-        this.child.stdin.end();
+        this.end();
 
         await this.quit(5_000);
     }
