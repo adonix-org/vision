@@ -29,9 +29,10 @@ export class Recording extends Ffmpeg {
         args.push("-i", "pipe:0");
         args.push("-avoid_negative_ts", "make_zero");
         args.push("-copyts");
-        // args.push("-map", "0:v");
 
-        if (this.audio) this.audio;
+        if (!this.audio) {
+            args.push("-an");
+        }
 
         args.push("-c", "copy");
         args.push("-f", this.format);

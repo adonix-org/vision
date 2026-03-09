@@ -21,5 +21,5 @@ application.register(broadcast);
 application.register(recording);
 
 await application.start();
-await new Promise((r) => setTimeout(r, 5_000));
+await new Promise((r) => setTimeout(r, 7_000));
 application.stop();
