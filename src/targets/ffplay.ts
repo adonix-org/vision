@@ -16,7 +16,6 @@ export class FfplayViewer extends Viewer {
     protected override args(): string[] {
         const args: string[] = [];
 
-        args.push("-loglevel", "quiet");
         args.push("-fflags", "nobuffer");
         args.push("-flags", "low_delay");
         args.push("-analyzeduration", "0");

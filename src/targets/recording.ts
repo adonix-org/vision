@@ -21,7 +21,7 @@ export class Recording extends Ffmpeg {
 
     protected override args(): string[] {
         const args = [];
-        args.push("-loglevel", "fatal");
+        
         args.push("-y");
         args.push("-f", "mpegts");
         args.push("-i", "pipe:0");

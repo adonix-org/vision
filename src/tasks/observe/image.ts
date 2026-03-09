@@ -13,7 +13,6 @@ export class ImageViewer extends Executable implements ImageTask {
     protected override args(): string[] {
         const args: string[] = [];
 
-        args.push("-loglevel", "quiet");
         args.push("-fflags", "nobuffer");
         args.push("-flags", "low_delay");
         args.push("-probesize", "32");

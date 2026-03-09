@@ -21,13 +21,12 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     protected override args(): string[] {
         const args: string[] = [];
 
-        args.push("-loglevel", "fatal");
         args.push("-f", "mpegts");
         args.push("-i", "pipe:0");
         args.push("-vf", `fps=${this.fps}`);
         args.push("-f", "image2pipe");
         args.push("-vcodec", this.decoder.vcodec);
-        // args.push("-q:v", "1");
+        args.push("-q:v", "1");
         args.push("pipe:1");
 
         return args;
