@@ -18,7 +18,7 @@ export class PreRoll extends Lifecycle implements Broadcast {
     ) {
         super();
 
-        const maxAgeMs = 1000 * seconds;
+        const maxAgeMs = 1_000 * seconds;
         this.subscribers = new Subscribers(seconds * kbps * 1024);
 
         this.buffer = new MpegTsBuffer(broadcast, maxAgeMs);

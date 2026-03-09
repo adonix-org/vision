@@ -18,7 +18,7 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     ) {
         super();
 
-        this.msPerFrame = 1000 / fps;
+        this.msPerFrame = 1_000 / fps;
 
         this.register(this.decoder);
     }

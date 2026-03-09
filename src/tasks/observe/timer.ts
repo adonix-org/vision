@@ -6,7 +6,7 @@ export class Timer implements ImageTask {
 
     constructor(
         private readonly task: ImageTask,
-        interval = 5000,
+        interval = 5_000,
     ) {
         setInterval(() => {
             if (this.count === 0) {
