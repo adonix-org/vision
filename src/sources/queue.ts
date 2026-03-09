@@ -37,7 +37,7 @@ export class ImageQueue extends Lifecycle implements ImageSource {
         });
     }
 
-    public override async onstop(): Promise<void> {
+    protected override async onstop(): Promise<void> {
         await super.onstop();
 
         clearInterval(this.intervalId);

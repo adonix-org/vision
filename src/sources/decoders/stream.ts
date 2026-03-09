@@ -33,7 +33,9 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     }
 
     public async next(): Promise<ImageFrame | null> {
-        return this.decoder.next();
+        const frame = await this.decoder.next();
+
+        return frame;
     }
 
     protected override async onstart(): Promise<void> {

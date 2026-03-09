@@ -8,6 +8,6 @@ export class Timestamp extends Watermark {
     protected override getText(frame: ImageFrame): string {
         const date = new Date(frame.timestamp);
 
-        return date.toISOString();
+        return `${frame.index} ${date.toISOString()}`;
     }
 }

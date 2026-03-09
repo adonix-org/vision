@@ -4,11 +4,12 @@ import { ImageQueue } from "../queue";
 export abstract class ImageDecoder extends ImageQueue {
     private buffer: Buffer = Buffer.alloc(0);
     private offset = 0;
+    private index = 0;
 
     public abstract get vcodec(): string;
     protected abstract get soi(): Buffer;
     protected abstract get eoi(): Buffer;
-    protected abstract onimage(buffer: Buffer): ImageFrame;
+    protected abstract onimage(index: number, buffer: Buffer): ImageFrame;
 
     public override clear(): void {
         super.clear();
@@ -39,7 +40,7 @@ export abstract class ImageDecoder extends ImageQueue {
             if (end === -1) break;
 
             const frame = this.buffer.subarray(start, end + eoi.length);
-            this.push(this.onimage(frame));
+            this.push(this.onimage(this.index++, frame));
 
             this.offset = end + eoi.length;
         }
@@ -50,6 +51,12 @@ export abstract class ImageDecoder extends ImageQueue {
                 this.offset = 0;
             }
         }
+    }
+
+    protected override async onstart(): Promise<void> {
+        await super.onstart();
+
+        this.index = 0;
     }
 
     public override toString(): string {

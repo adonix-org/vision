@@ -20,6 +20,7 @@ class ImageBuffer(BaseModel):
 
 class ImageFrame(BaseModel):
     image: ImageBuffer
+    index: int
     timestamp: float
     version: Literal[1] = SUPPORTED_VERSION
     annotations: List[Annotation]
