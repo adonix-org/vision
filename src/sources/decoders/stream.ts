@@ -8,8 +8,8 @@ import { JpegDecoder } from "./jpeg";
 
 export class StreamDecoder extends Ffmpeg implements ImageSource {
     private stream: Readable | null = null;
-    private timeOrigin: number = 0;
-    private msPerFrame: number;
+    private timeOrigin: number = Date.now();
+    private readonly msPerFrame: number;
 
     constructor(
         private readonly broadcast: Broadcast,
