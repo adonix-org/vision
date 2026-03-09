@@ -3,13 +3,20 @@ import { ImageFrame } from "..";
 import { Stage } from ".";
 
 export class Watermark implements Stage {
+    private readonly _text: string;
     constructor(
-        private readonly text: string,
+        text: string,
         private readonly fontSize: number = 80,
         private readonly padding: number = 20,
-    ) {}
+    ) {
+        this._text = text;
+    }
 
-    public async draw(_frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
+    protected getText(_frame: ImageFrame): string {
+        return this._text;
+    }
+
+    public async draw(frame: ImageFrame, canvas: Canvas): Promise<Canvas> {
         const ctx = canvas.getContext("2d");
 
         ctx.font = `${this.fontSize}px sans-serif`;
@@ -26,7 +33,7 @@ export class Watermark implements Stage {
         const x = canvas.width - this.padding;
         const y = canvas.height - this.padding;
 
-        ctx.fillText(this.text, x, y);
+        ctx.fillText(this.getText(frame), x, y);
 
         return canvas;
     }

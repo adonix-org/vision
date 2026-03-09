@@ -4,7 +4,6 @@ import { PyServer } from "../spawn/pyserver";
 import { ImageViewer } from "../tasks/observe/image";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
-import { Watermark } from "../tasks/draw/watermark";
 import { Drawing } from "../tasks/draw";
 import { Throttle } from "../tasks/filter/throttle";
 import { Record } from "../tasks/transfer/record";
@@ -15,6 +14,7 @@ import { StreamDecoder } from "../sources/decoders/stream";
 import { LiveDecoder } from "../sources/decoders/live";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Ignore } from "../tasks/filter/ignore";
+import { Timestamp } from "../tasks/draw/timestamp";
 
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
@@ -38,7 +38,7 @@ export class Motion extends Agent {
         const drawing = new Drawing(
             new Label("yellow", 36, "red"),
             new Trail(),
-            new Watermark("LiveMotion"),
+            new Timestamp(),
         );
 
         this.addTask(new Throttle(1));
