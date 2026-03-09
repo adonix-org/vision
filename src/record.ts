@@ -14,14 +14,14 @@ const recording = new Recording(
     broadcast,
     new DatePath("/Users/tybusby/Camera/recordings", "video"),
     "mp4",
-    true,
+    false,
 );
 
 application.register(broadcast);
 
 await application.start();
-await new Promise((r) => setTimeout(r, 5_000));
+await new Promise((r) => setTimeout(r, 3_000));
 await recording.start();
-await new Promise((r) => setTimeout(r, 5_000));
+await new Promise((r) => setTimeout(r, 2_000));
 await recording.stop();
 await application.stop();

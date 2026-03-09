@@ -25,8 +25,6 @@ export class Recording extends Ffmpeg {
         args.push("-y");
         args.push("-f", "mpegts");
         args.push("-i", "pipe:0");
-        args.push("-avoid_negative_ts", "make_zero");
-        args.push("-copyts");
 
         if (!this.audio) {
             args.push("-an");
