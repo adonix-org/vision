@@ -14,7 +14,7 @@ export class Recording extends Ffmpeg {
         private readonly broadcast: Broadcast,
         private readonly filepath: FilePath,
         private readonly format: SupportedFileFormat = "mp4",
-        private readonly audio: boolean = true,
+        private readonly audio: boolean = false,
     ) {
         super();
     }

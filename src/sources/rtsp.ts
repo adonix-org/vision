@@ -28,7 +28,6 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     protected override args(): string[] {
         const args: string[] = [];
 
-        args.push("-loglevel", "fatal");
         args.push("-rtsp_transport", "tcp");
         args.push("-use_wallclock_as_timestamps", "1");
         args.push("-i", this.url);
