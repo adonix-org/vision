@@ -7,6 +7,8 @@ import { Readable } from "node:stream";
 import { JpegDecoder } from "./jpeg";
 
 export class StreamDecoder extends Ffmpeg implements ImageSource {
+    private static readonly MAX_AGE_SECONDS = 5;
+
     private stream: Readable | null = null;
     private timeOrigin: number = Date.now();
     private readonly msPerFrame: number;
@@ -14,7 +16,9 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     constructor(
         private readonly broadcast: Broadcast,
         private readonly fps: number,
-        private readonly decoder: ImageDecoder = new JpegDecoder(1),
+        private readonly decoder: ImageDecoder = new JpegDecoder(
+            fps * StreamDecoder.MAX_AGE_SECONDS,
+        ),
     ) {
         super();
 
