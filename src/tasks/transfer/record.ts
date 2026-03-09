@@ -18,6 +18,7 @@ export class Record extends Lifecycle implements ImageTask {
         this.broadcast,
         this.filepath,
         "mp4",
+        this.audio,
     );
 
     constructor(
@@ -26,6 +27,7 @@ export class Record extends Lifecycle implements ImageTask {
         private readonly preroll: number,
         private readonly postroll: number,
         private readonly category: string,
+        private readonly audio = false,
     ) {
         super();
     }

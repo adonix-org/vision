@@ -21,11 +21,10 @@ export class Recording extends Ffmpeg {
 
     protected override args(): string[] {
         const args = [];
-
         args.push("-loglevel", "fatal");
         args.push("-y");
+        args.push("-fflags", "+genpts+igndts");
         args.push("-f", "mpegts");
-        args.push("-use_wallclock_as_timestamps", "0");
         args.push("-i", "pipe:0");
         args.push("-avoid_negative_ts", "make_zero");
         args.push("-copyts");
