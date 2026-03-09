@@ -7,7 +7,7 @@ import { MpegTsBuffer } from "./mpegts";
 export abstract class Rtsp extends Ffmpeg implements Broadcast {
     private static readonly DEFAULT_HIGHWATER = 2 * 1024 * 1024;
 
-    private readonly keyframes: MpegTsBuffer;
+    private readonly keyframe: MpegTsBuffer;
 
     private readonly subscribers: Subscribers;
 
@@ -17,8 +17,8 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     ) {
         super();
 
-        this.keyframes = new MpegTsBuffer(this);
-        this.register(this.keyframes);
+        this.keyframe = new MpegTsBuffer(this);
+        this.register(this.keyframe);
 
         this.subscribers = new Subscribers(highwater);
     }
@@ -45,7 +45,7 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     public subscribe(): Readable {
         const subscriber = this.subscribers.subscribe();
 
-        for (const chunk of this.keyframes.buffer()) {
+        for (const chunk of this.keyframe.buffer()) {
             subscriber.write(chunk);
         }
 
