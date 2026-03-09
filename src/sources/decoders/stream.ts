@@ -32,8 +32,8 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
             "image2pipe",
             "-vcodec",
             this.decoder.vcodec,
-            "-q:v",
-            "1",
+            // "-q:v",
+            // "1",
             "pipe:1",
         ];
         return args;
