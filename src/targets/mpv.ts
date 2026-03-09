@@ -14,14 +14,15 @@ export class MpvViewer extends Viewer {
     }
 
     protected override args(): string[] {
-        const args = [
-            "--cache=no",
-            "--osc=no",
-            "--input-terminal=no",
-            "--no-input-default-bindings",
-            `--title=${this.title}`,
-            "-",
-        ];
+        const args: string[] = [];
+
+        args.push("--cache=no");
+        args.push("--osc=no");
+        args.push("--input-terminal=no");
+        args.push("--no-input-default-bindings");
+        args.push(`--title=${this.title}`);
+        args.push("-");
+
         return args;
     }
 

@@ -15,29 +15,19 @@ export abstract class Encoder extends Ffmpeg implements Broadcast {
     }
 
     protected override args(): string[] {
-        const args = [
-            "-fflags",
-            "nobuffer",
-            "-f",
-            "image2pipe",
-            "-vcodec",
-            "mjpeg",
-            "-r",
-            `${this.fps}`,
-            "-i",
-            "-",
-            "-c:v",
-            "libx264",
-            "-preset",
-            "veryfast",
-            "-tune",
-            "zerolatency",
-            "-g",
-            "1",
-            "-f",
-            "mpegts",
-            "-",
-        ];
+        const args: string[] = [];
+
+        args.push("-fflags", "nobuffer");
+        args.push("-f", "image2pipe");
+        args.push("-vcodec", "mjpeg");
+        args.push("-r", `${this.fps}`);
+        args.push("-i", "-");
+        args.push("-c:v", "libx264");
+        args.push("-preset", "veryfast");
+        args.push("-tune", "zerolatency");
+        args.push("-g", "1");
+        args.push("-f", "mpegts");
+        args.push("-");
 
         return args;
     }

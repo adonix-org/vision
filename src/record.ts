@@ -18,12 +18,8 @@ const recording = new Recording(
 );
 
 application.register(broadcast);
+application.register(recording);
 
 await application.start();
-
-while (true) {
-    await new Promise((r) => setTimeout(r, 5_000));
-    await recording.start();
-    await new Promise((r) => setTimeout(r, 15_000));
-    await recording.stop();
-}
+await new Promise((r) => setTimeout(r, 5_000));
+application.stop();

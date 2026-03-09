@@ -11,30 +11,20 @@ export class ImageViewer extends Executable implements ImageTask {
     }
 
     protected override args(): string[] {
-        const args = [
-            "-loglevel",
-            "quiet",
-            "-fflags",
-            "nobuffer",
-            "-flags",
-            "low_delay",
-            "-probesize",
-            "32",
-            "-analyzeduration",
-            "0",
-            "-vf",
-            "setpts=0",
-            "-sync",
-            "video",
-            "-framedrop",
-            "-f",
-            "mjpeg",
-            "-i",
-            "pipe:0",
-            "-autoexit",
-            "-window_title",
-            this.title,
-        ];
+        const args: string[] = [];
+
+        args.push("-loglevel", "quiet");
+        args.push("-fflags", "nobuffer");
+        args.push("-flags", "low_delay");
+        args.push("-probesize", "32");
+        args.push("-analyzeduration", "0");
+        args.push("-vf", "setpts=0");
+        args.push("-sync", "video");
+        args.push("-framedrop");
+        args.push("-f", "mjpeg");
+        args.push("-i", "pipe:0");
+        args.push("-autoexit");
+        args.push("-window_title", this.title);
 
         return args;
     }

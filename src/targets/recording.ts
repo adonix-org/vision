@@ -21,6 +21,7 @@ export class Recording extends Ffmpeg {
 
     protected override args(): string[] {
         const args = [];
+
         args.push("-loglevel", "fatal");
         args.push("-y");
         args.push("-f", "mpegts");
@@ -28,14 +29,14 @@ export class Recording extends Ffmpeg {
         args.push("-i", "pipe:0");
         args.push("-avoid_negative_ts", "make_zero");
         args.push("-copyts");
-        if (this.audio) {
-            args.push("-map", "0");
-        } else {
-            args.push("-map", "0:v");
-        }
+        // args.push("-map", "0:v");
+
+        if (this.audio) this.audio;
+
         args.push("-c", "copy");
         args.push("-f", this.format);
         args.push(`${this.filepath.path}.${this.format}`);
+
         return args;
     }
 

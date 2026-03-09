@@ -14,28 +14,19 @@ export class FfplayViewer extends Viewer {
     }
 
     protected override args(): string[] {
-        const args = [
-            "-loglevel",
-            "quiet",
-            "-fflags",
-            "nobuffer",
-            "-flags",
-            "low_delay",
-            "-analyzeduration",
-            "0",
-            "-vf",
-            "setpts=0",
-            "-sync",
-            "video",
-            "-framedrop",
-            "-f",
-            "mpegts",
-            "-i",
-            "pipe:0",
-            "-autoexit",
-            "-window_title",
-            this.title,
-        ];
+        const args: string[] = [];
+
+        args.push("-loglevel", "quiet");
+        args.push("-fflags", "nobuffer");
+        args.push("-flags", "low_delay");
+        args.push("-analyzeduration", "0");
+        args.push("-vf", "setpts=0");
+        args.push("-sync", "video");
+        args.push("-framedrop");
+        args.push("-f", "mpegts");
+        args.push("-i", "pipe:0");
+        args.push("-autoexit");
+        args.push("-window_title", this.title);
 
         return args;
     }

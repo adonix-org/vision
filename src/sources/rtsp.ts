@@ -26,29 +26,19 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     public abstract get name(): string;
 
     protected override args(): string[] {
-        const args = [
-            "-loglevel",
-            "fatal",
-            "-rtsp_transport",
-            "tcp",
-            "-use_wallclock_as_timestamps",
-            "1",
-            "-i",
-            this.url,
-            "-map",
-            "0",
-            "-c:v",
-            "copy",
-            "-c:a",
-            "aac",
-            "-ar",
-            "48000",
-            "-ac",
-            "2",
-            "-f",
-            "mpegts",
-            "pipe:1",
-        ];
+        const args: string[] = [];
+
+        args.push("-loglevel", "fatal");
+        args.push("-rtsp_transport", "tcp");
+        args.push("-use_wallclock_as_timestamps", "1");
+        args.push("-i", this.url);
+        args.push("-map", "0");
+        args.push("-c:v", "copy");
+        args.push("-c:a", "aac");
+        args.push("-ar", "48000");
+        args.push("-ac", "2");
+        args.push("-f", "mpegts");
+        args.push("pipe:1");
 
         return args;
     }

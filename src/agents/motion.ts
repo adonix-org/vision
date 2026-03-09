@@ -44,7 +44,7 @@ export class Motion extends Agent {
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
         this.addTask(new ConfidenceFilter(0.35));
-        this.addTask(new Ignore("vehicle"));
+        this.addTask(new Ignore("vehicles"));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
