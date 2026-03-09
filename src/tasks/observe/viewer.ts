@@ -1,7 +1,7 @@
 import { ImageFrame, ImageTask } from "..";
 import { Executable } from "../../spawn/executable";
 
-export class ImageViewer extends Executable implements ImageTask {
+export class ViewerTask extends Executable implements ImageTask {
     constructor(private readonly title = "Image Viewer") {
         super();
     }
@@ -55,6 +55,6 @@ export class ImageViewer extends Executable implements ImageTask {
     }
 
     public override toString(): string {
-        return `${super.toString()}[ImageViewer]`;
+        return `${super.toString()}[ViewerTask]`;
     }
 }

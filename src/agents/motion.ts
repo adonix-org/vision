@@ -1,7 +1,7 @@
 import { Agent } from "./agent";
 import { Remote } from "../tasks/remote/remote";
 import { PyServer } from "../spawn/pyserver";
-import { ImageViewer } from "../tasks/observe/viewer";
+import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
 import { Drawing } from "../tasks/draw";
@@ -17,7 +17,7 @@ import { Timestamp } from "../tasks/draw/timestamp";
 
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
-        const viewer = new ImageViewer("LiveMotion");
+        const viewer = new ViewerTask("LiveMotion");
         const preroll = new PreRoll(broadcast, 10);
 
         const animal = new Record(preroll, folder, 10, 15, "animal");
