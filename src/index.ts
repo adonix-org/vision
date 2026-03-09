@@ -16,4 +16,14 @@ const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 camera.register(viewer);
 camera.register(agent);
 
+process.stdin.on("data", async (key) => {
+    if (key.toString().toLowerCase() === "v") {
+        if (viewer.running) {
+            await viewer.stop();
+        } else {
+            await viewer.start();
+        }
+    }
+});
+
 application.register(camera).start();
