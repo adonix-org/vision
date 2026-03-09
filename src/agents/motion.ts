@@ -1,7 +1,7 @@
 import { Agent } from "./agent";
 import { Remote } from "../tasks/remote/remote";
 import { PyServer } from "../spawn/pyserver";
-import { ImageViewer } from "../tasks/observe/image";
+import { ImageViewer } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
 import { Drawing } from "../tasks/draw";

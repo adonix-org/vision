@@ -2,7 +2,7 @@ import { Agent } from "./agent";
 import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { EncoderTask } from "../tasks/transfer/encoder";
-import { ImageViewer } from "../tasks/observe/image";
+import { ImageViewer } from "../tasks/observe/viewer";
 import { FfplayViewer } from "../targets/ffplay";
 import { MpvViewer } from "../targets/mpv";
 
