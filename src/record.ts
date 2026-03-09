@@ -14,6 +14,7 @@ const recording = new Recording(
     broadcast,
     new DatePath("/Users/tybusby/Camera/recordings", "video"),
     "mp4",
+    true,
 );
 
 application.register(broadcast);
@@ -23,6 +24,6 @@ await application.start();
 while (true) {
     await new Promise((r) => setTimeout(r, 5_000));
     await recording.start();
-    await new Promise((r) => setTimeout(r, 2_000));
+    await new Promise((r) => setTimeout(r, 15_000));
     await recording.stop();
 }

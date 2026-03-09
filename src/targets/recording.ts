@@ -14,31 +14,28 @@ export class Recording extends Ffmpeg {
         private readonly broadcast: Broadcast,
         private readonly filepath: FilePath,
         private readonly format: SupportedFileFormat = "mp4",
+        private readonly audio: boolean = true,
     ) {
         super();
     }
 
     protected override args(): string[] {
-        const args = [
-            "-loglevel",
-            "fatal",
-            "-y",
-            "-f",
-            "mpegts",
-            "-use_wallclock_as_timestamps",
-            "0",
-            "-i",
-            "pipe:0",
-            "-avoid_negative_ts",
-            "make_zero",
-            "-copyts",
-            "-c",
-            "copy",
-            "-f",
-            this.format,
-            `${this.filepath.path}.${this.format}`,
-        ];
-
+        const args = [];
+        args.push("-loglevel", "fatal");
+        args.push("-y");
+        args.push("-f", "mpegts");
+        args.push("-use_wallclock_as_timestamps", "0");
+        args.push("-i", "pipe:0");
+        args.push("-avoid_negative_ts", "make_zero");
+        args.push("-copyts");
+        if (this.audio) {
+            args.push("-map", "0");
+        } else {
+            args.push("-map", "0:v");
+        }
+        args.push("-c", "copy");
+        args.push("-f", this.format);
+        args.push(`${this.filepath.path}.${this.format}`);
         return args;
     }
 
