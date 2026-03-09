@@ -10,7 +10,7 @@ const url = process.env.C121_RTSP_URL!;
 const camera = new Camera("c121", url);
 
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
-const agent = new Motion(camera, folder, 1);
+const agent = new Motion(camera, folder, 5);
 const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 
 camera.register(viewer);

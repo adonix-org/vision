@@ -35,6 +35,8 @@ export class Record extends Lifecycle implements ImageTask {
     protected override async onstop(): Promise<void> {
         await super.onstop();
 
+        if (this.timerId) clearTimeout(this.timerId);
+
         await this.recording.stop();
     }
 
@@ -54,14 +56,14 @@ export class Record extends Lifecycle implements ImageTask {
                 this.recording.timestamp =
                     frame.timestamp - this.preroll * 1000;
 
-                await this.recording.start();
+                void this.recording.start();
             }
 
             if (this.timerId) clearTimeout(this.timerId);
 
             this.timerId = setTimeout(async () => {
                 this.timerId = undefined;
-                await this.recording.stop();
+                void this.recording.stop();
             }, this.postroll * 1_000);
         }
 
