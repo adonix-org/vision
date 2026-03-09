@@ -25,7 +25,7 @@ export class Motion extends Agent {
         const person = new Record(preroll, folder, 5, 10, "person");
         const vehicle = new Record(preroll, folder, 2, 3, "vehicle");
 
-        const decoder = new StreamDecoder(broadcast, new LiveDecoder(15), fps);
+        const decoder = new StreamDecoder(broadcast, new LiveDecoder(30), fps);
         super(decoder);
 
         this.register(new PyServer());
@@ -41,10 +41,10 @@ export class Motion extends Agent {
             new Timestamp(),
         );
 
-        this.addTask(new Throttle(fps));
+        this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
         this.addTask(new ConfidenceFilter(0.55));
-        this.addTask(new Ignore("vehicle"));
+        this.addTask(new Ignore("vehicles"));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
