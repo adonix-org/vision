@@ -4,6 +4,7 @@ import { Ffmpeg } from "../../spawn/ffmpeg";
 import { ImageFrame } from "../../tasks";
 import { Broadcast } from "../broadcast";
 import { Readable } from "node:stream";
+import { JpegDecoder } from "./jpeg";
 
 export class StreamDecoder extends Ffmpeg implements ImageSource {
     private stream: Readable | null = null;
@@ -12,8 +13,8 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
 
     constructor(
         private readonly broadcast: Broadcast,
-        private readonly decoder: ImageDecoder,
         private readonly fps: number,
+        private readonly decoder: ImageDecoder = new JpegDecoder(1),
     ) {
         super();
 
@@ -31,7 +32,6 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         args.push("-vf", `fps=${this.fps}`);
         args.push("-f", "image2pipe");
         args.push("-vcodec", this.decoder.vcodec);
-        args.push("-q:v", "1");
         args.push("pipe:1");
 
         return args;
@@ -61,10 +61,6 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
 
         this.stream.once("data", () => {
             this.timeOrigin = Date.now();
-            console.warn(
-                this.toString(),
-                new Date(this.timeOrigin).toISOString(),
-            );
         });
 
         const cleanup = () => {

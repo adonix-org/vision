@@ -11,7 +11,6 @@ import { PreRoll } from "../targets/preroll";
 import { PointFilter } from "../tasks/filter/point";
 import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
-import { LiveDecoder } from "../sources/decoders/live";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Ignore } from "../tasks/filter/ignore";
 import { Timestamp } from "../tasks/draw/timestamp";
@@ -25,7 +24,7 @@ export class Motion extends Agent {
         const person = new Record(preroll, folder, 5, 10, "person");
         const vehicle = new Record(preroll, folder, 2, 3, "vehicle");
 
-        const decoder = new StreamDecoder(broadcast, new LiveDecoder(30), fps);
+        const decoder = new StreamDecoder(broadcast, fps);
         super(decoder);
 
         this.register(new PyServer());

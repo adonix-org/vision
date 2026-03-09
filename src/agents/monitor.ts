@@ -5,11 +5,10 @@ import { PublisherSession } from "../ws/publisher";
 import { PyServer } from "../spawn/pyserver";
 import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
-import { LiveDecoder } from "../sources/decoders/live";
 
 export class MonitorLive extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
-        const decoder = new StreamDecoder(broadcast, new LiveDecoder(15), fps);
+        const decoder = new StreamDecoder(broadcast, fps);
         const live = new LiveImage(broadcast.name);
         const session = new PublisherSession(live);
         const monitor = new Monitor(folder);
