@@ -22,14 +22,19 @@ export class Recording extends Ffmpeg {
     protected override args(): string[] {
         const args = [];
 
-        this.audio;
-
         args.push("-y");
         args.push("-i", "pipe:0");
         args.push("-c:v", "libx264");
         args.push("-preset", "ultrafast");
         args.push("-vf", "setpts=PTS-STARTPTS");
-        args.push("-af", "asetpts=PTS-STARTPTS");
+
+        if (this.audio) {
+            args.push("-c:a", "aac");
+            args.push("-af", "asetpts=PTS-STARTPTS");
+        } else {
+            args.push("-an");
+        }
+
         args.push("-f", this.format);
         args.push(`${this.filepath.path}.${this.format}`);
 
