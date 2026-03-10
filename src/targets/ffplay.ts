@@ -10,7 +10,7 @@ export class FfplayViewer extends Viewer {
     }
 
     protected override executable(): string {
-        return "/opt/homebrew/bin/ffplay";
+        return "ffplay";
     }
 
     protected override args(): string[] {

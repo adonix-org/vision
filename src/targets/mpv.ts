@@ -10,7 +10,7 @@ export class MpvViewer extends Viewer {
     }
 
     protected override executable(): string {
-        return "/opt/homebrew/bin/mpv";
+        return "mpv";
     }
 
     protected override args(): string[] {
