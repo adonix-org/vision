@@ -121,7 +121,7 @@ export class MpegTsBuffer extends Lifecycle {
 
         this.purgeTimer = setInterval(() => {
             this.purge();
-        }, 1_000);
+        }, 2_000);
     }
 
     protected override async onstop(): Promise<void> {
