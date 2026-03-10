@@ -20,9 +20,9 @@ export class Motion extends Agent {
         const viewer = new ViewerTask("LiveMotion");
         const preroll = new PreRoll(broadcast, 10);
 
-        const animal = new Record(preroll, folder, 10, 15, "animal");
-        const person = new Record(preroll, folder, 5, 10, "person");
-        const vehicle = new Record(preroll, folder, 2, 3, "vehicle");
+        const animal = new Record(preroll, folder, 10, 15, "animal", true);
+        const person = new Record(preroll, folder, 5, 10, "person", true);
+        const vehicle = new Record(preroll, folder, 2, 3, "vehicle", true);
 
         const decoder = new StreamDecoder(broadcast, fps);
         super(decoder);
@@ -42,8 +42,8 @@ export class Motion extends Agent {
 
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
-        this.addTask(new ConfidenceFilter(0.55));
-        this.addTask(new Ignore("vehicle"));
+        this.addTask(new ConfidenceFilter(0.3));
+        this.addTask(new Ignore("vehicles"));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
