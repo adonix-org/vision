@@ -26,7 +26,7 @@ export abstract class Encoder extends Ffmpeg implements Broadcast {
         args.push("-preset", "veryfast");
         args.push("-tune", "zerolatency");
         args.push("-g", "1");
-        args.push("-f", "mpegts");
+        args.push("-f", this.format);
         args.push("-");
 
         return args;
