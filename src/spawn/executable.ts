@@ -44,15 +44,29 @@ export abstract class Executable extends Lifecycle {
     private readonly watch = (): void => {
         if (this._child === null) return;
 
-        const code = this._child.signalCode ?? this.child.exitCode;
-        const message = `process exited with code ${code}`;
-        if (code !== 0) {
-            console.warn(this.toString(), message);
+        const code = this._child.exitCode;
+        if (code !== null && code != 0) {
+            this.oncode(code);
+        }
+
+        const signal = this._child.signalCode;
+        if (signal !== null) {
+            this.onsignal(signal);
         }
 
         this.stop();
         this._child = null;
     };
+
+    protected oncode(code: number): void {
+        const message = `process exited with code ${code}`;
+        console.error(this.toString(), message);
+    }
+
+    protected onsignal(signal: NodeJS.Signals): void {
+        const message = `process terminated by signal ${signal}`;
+        console.warn(this.toString(), message);
+    }
 
     protected async quit(afterMs = 0): Promise<void> {
         return new Promise<void>((resolve) => {

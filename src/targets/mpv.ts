@@ -20,6 +20,7 @@ export class MpvViewer extends Viewer {
         args.push("--osc=no");
         args.push("--input-terminal=no");
         args.push("--no-input-default-bindings");
+        args.push("--mute");
         args.push(`--title=${this.title}`);
         args.push("-");
 
