@@ -82,7 +82,7 @@ export abstract class Executable extends Lifecycle {
                 sigkill = setTimeout(() => {
                     if (child.exitCode !== null) return;
 
-                    console.warn(this.toString(), "forcefully terminating...");
+                    console.warn(this.toString(), "sending SIGKILL");
                     child.kill("SIGKILL");
                 }, 3000);
             }, afterMs);
