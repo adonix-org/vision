@@ -26,7 +26,7 @@ export class PreRoll extends Lifecycle implements Broadcast {
     }
 
     public get format(): StreamFormat {
-        return "mpegts";
+        return this.broadcast.format;
     }
 
     public subscribe(cutoff: number): Readable {
