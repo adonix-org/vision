@@ -14,7 +14,7 @@ const recording = new Recording(
     broadcast,
     new DatePath("/Users/tybusby/Camera/recordings", "video"),
     "mp4",
-    false,
+    true,
 );
 
 application.register(broadcast);
