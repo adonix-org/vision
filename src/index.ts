@@ -13,7 +13,6 @@ const folder = process.env.LOCAL_IMAGE_FOLDER!;
 const agent = new Motion(camera, folder, 1);
 const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 
-camera.register(viewer);
 camera.register(agent);
 
 process.stdin.on("data", async (key) => {
@@ -26,4 +25,7 @@ process.stdin.on("data", async (key) => {
     }
 });
 
-application.register(camera).start();
+application.register(camera);
+await application.start();
+
+application.register(viewer);
