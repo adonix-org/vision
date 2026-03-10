@@ -28,11 +28,8 @@ export class Recording extends Ffmpeg {
         args.push("-i", "pipe:0");
         args.push("-c:v", "libx264");
         args.push("-preset", "ultrafast");
-        args.push("-c:a", "aac");
         args.push("-vf", "setpts=PTS-STARTPTS");
         args.push("-af", "asetpts=PTS-STARTPTS");
-        args.push("-map", "0:v:0");
-        args.push("-map", "0:a:0");
         args.push("-f", this.format);
         args.push(`${this.filepath.path}.${this.format}`);
 
