@@ -18,11 +18,12 @@ export class FfplayViewer extends Viewer {
 
         args.push("-fflags", "nobuffer");
         args.push("-flags", "low_delay");
+        args.push("-probesize", "32");
         args.push("-analyzeduration", "0");
         args.push("-vf", "setpts=0");
         args.push("-sync", "video");
         args.push("-framedrop");
-        args.push("-f", "mpegts");
+        args.push("-f", this.broadcast.format);
         args.push("-i", "pipe:0");
         args.push("-autoexit");
         args.push("-window_title", this.title);

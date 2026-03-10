@@ -5,7 +5,7 @@ import { Broadcast } from "../sources/broadcast";
 export abstract class Viewer extends Executable {
     private stream: Readable | null = null;
 
-    constructor(private readonly broadcast: Broadcast) {
+    constructor(protected readonly broadcast: Broadcast) {
         super();
     }
 

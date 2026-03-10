@@ -3,13 +3,13 @@ import { Agent } from "./agent";
 import { LiveImage } from "../workflows/live";
 import { PublisherSession } from "../ws/publisher";
 import { PyServer } from "../spawn/pyserver";
-import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
+import { Camera } from "../sources/camera";
 
 export class MonitorLive extends Agent {
-    constructor(broadcast: Broadcast, folder: string, fps: number) {
-        const decoder = new StreamDecoder(broadcast, fps);
-        const live = new LiveImage(broadcast.name);
+    constructor(camera: Camera, folder: string, fps: number) {
+        const decoder = new StreamDecoder(camera, fps);
+        const live = new LiveImage(camera.name);
         const session = new PublisherSession(live);
         const monitor = new Monitor(folder);
 

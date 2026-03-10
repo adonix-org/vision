@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast, StreamFormat } from "../sources/broadcast";
 import { Subscribers } from "../sources/subscribers";
 import { Ffmpeg } from "../spawn/ffmpeg";
 
@@ -32,12 +32,12 @@ export abstract class Encoder extends Ffmpeg implements Broadcast {
         return args;
     }
 
-    public get name(): string {
-        return this.toString();
-    }
-
     public subscribe(): Readable {
         return this.subscribers.subscribe();
+    }
+
+    public get format(): StreamFormat {
+        return "mpegts";
     }
 
     protected override async onstart(): Promise<void> {

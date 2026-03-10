@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
 import { Ffmpeg } from "../spawn/ffmpeg";
-import { Broadcast } from "./broadcast";
+import { Broadcast, StreamFormat } from "./broadcast";
 import { Subscribers } from "./subscribers";
 import { MpegTsBuffer } from "./mpegts";
 
@@ -23,7 +23,9 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
         this.subscribers = new Subscribers(highwater);
     }
 
-    public abstract get name(): string;
+    public get format(): StreamFormat {
+        return "mpegts";
+    }
 
     protected override args(): string[] {
         const args: string[] = [];

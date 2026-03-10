@@ -1,7 +1,9 @@
 import { Readable } from "node:stream";
 
+export type StreamFormat = "mpegts" | "mjpeg";
+
 export interface Broadcast {
-    get name(): string;
+    get format(): StreamFormat;
 
     subscribe(timestamp?: number): Readable;
 }

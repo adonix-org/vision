@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
 import { Lifecycle } from "../lifecycle";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast, StreamFormat } from "../sources/broadcast";
 import { Subscribers } from "../sources/subscribers";
 import { MpegTsBuffer } from "../sources/mpegts";
 
@@ -25,8 +25,8 @@ export class PreRoll extends Lifecycle implements Broadcast {
         this.register(this.buffer);
     }
 
-    public get name(): string {
-        return `${this.broadcast.name}:preroll`;
+    public get format(): StreamFormat {
+        return "mpegts";
     }
 
     public subscribe(cutoff: number): Readable {

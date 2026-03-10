@@ -9,7 +9,7 @@ export class Camera extends Rtsp {
         this._name = name;
     }
 
-    public override get name(): string {
+    public get name(): string {
         return this._name;
     }
 }
