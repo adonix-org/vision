@@ -1,5 +1,6 @@
 import { Lifecycle } from "../lifecycle";
 import { Broadcast } from "./broadcast";
+import { indexOfKeyFrame } from "./decoders/h264";
 
 export interface MpegTsChunk {
     chunk: Buffer;
@@ -7,11 +8,7 @@ export interface MpegTsChunk {
 }
 
 export class MpegTsBuffer extends Lifecycle {
-    private static readonly NAL_UNIT_START = Buffer.from([
-        0x00, 0x00, 0x00, 0x01,
-    ]);
-
-    private purgeInterval?: NodeJS.Timeout;
+    private purgeTimer?: NodeJS.Timeout;
 
     private readonly _buffer: MpegTsChunk[] = [];
 
@@ -83,30 +80,28 @@ export class MpegTsBuffer extends Lifecycle {
     private keyframe(start: number): number {
         if (start < 0 || start > this._buffer.length - 1) return -1;
 
-        let prevTail: Buffer | null = null;
+        let previous: Buffer | undefined;
         for (let i = start; i >= 0; i--) {
-            const entry = this._buffer[i]!;
-            const buf = entry.chunk;
-            const scan = prevTail ? Buffer.concat([prevTail, buf]) : buf;
+            const current = this._buffer[i]!.chunk;
 
-            let offset = 0;
-            while (true) {
-                const nalStart = scan.indexOf(
-                    MpegTsBuffer.NAL_UNIT_START,
-                    offset,
+            let search: Buffer;
+            if (previous === undefined) {
+                search = current;
+            } else {
+                const overflow = previous.subarray(
+                    0,
+                    Math.min(4, previous.length),
                 );
-                if (nalStart === -1) break;
-
-                const headerIdx = nalStart + 4;
-                if (headerIdx >= scan.length) break;
-
-                const nalType = scan[headerIdx]! & 0x1f;
-                if (nalType === 5) return i;
-
-                offset = headerIdx + 1;
+                search = Buffer.concat(
+                    [current, overflow],
+                    current.length + overflow.length,
+                );
             }
 
-            prevTail = buf.subarray(Math.max(0, buf.length - 4));
+            const index = indexOfKeyFrame(search);
+            if (index >= 0) return i;
+
+            previous = current;
         }
 
         return -1;
@@ -124,7 +119,7 @@ export class MpegTsBuffer extends Lifecycle {
             });
         });
 
-        this.purgeInterval = setInterval(() => {
+        this.purgeTimer = setInterval(() => {
             this.purge();
         }, 1_000);
     }
@@ -132,7 +127,7 @@ export class MpegTsBuffer extends Lifecycle {
     protected override async onstop(): Promise<void> {
         await super.onstop();
 
-        clearInterval(this.purgeInterval);
+        clearInterval(this.purgeTimer);
 
         this._buffer.length = 0;
     }
