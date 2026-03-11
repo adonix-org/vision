@@ -25,4 +25,8 @@ export class H264KeyFrame implements StreamMarker {
     public get size(): number {
         return H264KeyFrame.START_CODE.length;
     }
+
+    public toString(): string {
+        return `[H264KeyFrame]`;
+    }
 }

@@ -136,6 +136,6 @@ export class StreamBuffer extends Lifecycle {
     }
 
     public override toString(): string {
-        return `${super.toString()}[MpegTsBuffer]`;
+        return `${super.toString()}[StreamBuffer]`;
     }
 }
