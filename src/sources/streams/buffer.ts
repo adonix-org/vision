@@ -5,6 +5,7 @@ import { StreamMarker } from "./marker";
 export interface StreamChunk {
     data: Buffer;
     timestamp: number;
+    marker: number | undefined;
 }
 
 export class StreamBuffer extends Lifecycle {
@@ -85,8 +86,12 @@ export class StreamBuffer extends Lifecycle {
 
         let previous: Buffer | undefined;
         for (let i = start; i >= 0; i--) {
-            const current = this._buffer[i]!.data;
+            const entry = this._buffer[i]!;
 
+            if (entry.marker === -1) continue;
+            if (entry.marker && entry.marker >= 0) return i;
+
+            const current = entry.data;
             let search: Buffer;
             if (previous === undefined) {
                 search = current;
@@ -101,8 +106,9 @@ export class StreamBuffer extends Lifecycle {
                 );
             }
 
-            const index = this.marker.find(search);
-            if (index >= 0) return i;
+            entry.marker = this.marker.find(search);
+            
+            if (entry.marker >= 0) return i;
 
             previous = current;
         }
@@ -119,6 +125,7 @@ export class StreamBuffer extends Lifecycle {
             this._buffer.push({
                 data: chunk,
                 timestamp: Date.now(),
+                marker: undefined,
             });
         });
 
