@@ -88,8 +88,10 @@ export class StreamBuffer extends Lifecycle {
         for (let i = start; i >= 0; i--) {
             const entry = this._buffer[i]!;
 
-            if (entry.marker === -1) continue;
-            if (entry.marker && entry.marker >= 0) return i;
+            if (entry.marker !== undefined) {
+                if (entry.marker >= 0) return i;
+                continue;
+            }
 
             const current = entry.data;
             let search: Buffer;
@@ -107,7 +109,7 @@ export class StreamBuffer extends Lifecycle {
             }
 
             entry.marker = this.marker.find(search);
-            
+
             if (entry.marker >= 0) return i;
 
             previous = current;
