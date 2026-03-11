@@ -5,7 +5,7 @@ import { FfplayViewer } from "../../targets/ffplay";
 import { Lifecycle } from "../../lifecycle";
 
 export class ViewerTask extends Lifecycle implements Broadcast, ImageTask {
-    private stream = new PassThrough();
+    private readonly stream = new PassThrough();
 
     constructor(title?: string) {
         super();
