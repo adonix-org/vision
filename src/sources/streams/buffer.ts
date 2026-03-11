@@ -21,7 +21,7 @@ export class StreamBuffer extends Lifecycle {
         super();
     }
 
-    public buffer(cutoff?: number): Buffer[] {
+    public stream(cutoff?: number): Buffer[] {
         const chunks = this.chunks(cutoff);
         return chunks.map((c) => c.data);
     }
