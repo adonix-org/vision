@@ -100,7 +100,7 @@ export class StreamBuffer extends Lifecycle {
             } else {
                 const overflow = previous.subarray(
                     0,
-                    Math.min(this.marker.size, previous.length),
+                    Math.min(this.marker.size - 1, previous.length),
                 );
                 search = Buffer.concat(
                     [current, overflow],
