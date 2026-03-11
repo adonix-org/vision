@@ -2,12 +2,13 @@ import { Readable } from "node:stream";
 import { Lifecycle } from "../lifecycle";
 import { Broadcast, StreamFormat } from "../sources/broadcast";
 import { Subscribers } from "../sources/subscribers";
-import { MpegTsBuffer } from "../sources/mpegts";
+import { StreamBuffer } from "../sources/streams/buffer";
+import { H264KeyFrame } from "../sources/streams/h264";
 
 export class PreRoll extends Lifecycle implements Broadcast {
     private upstream: Readable | null = null;
 
-    public buffer: MpegTsBuffer;
+    public buffer: StreamBuffer;
 
     private readonly subscribers;
 
@@ -21,7 +22,7 @@ export class PreRoll extends Lifecycle implements Broadcast {
         const maxAgeMs = 1_000 * seconds;
         this.subscribers = new Subscribers(seconds * kbps * 1024);
 
-        this.buffer = new MpegTsBuffer(broadcast, maxAgeMs);
+        this.buffer = new StreamBuffer(broadcast, new H264KeyFrame(), maxAgeMs);
         this.register(this.buffer);
     }
 

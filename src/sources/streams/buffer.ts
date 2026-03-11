@@ -1,19 +1,20 @@
-import { Lifecycle } from "../lifecycle";
-import { Broadcast } from "./broadcast";
-import { indexOfKeyFrame } from "./decoders/h264";
+import { Lifecycle } from "../../lifecycle";
+import { Broadcast } from "../broadcast";
+import { StreamMarker } from "./marker";
 
-export interface MpegTsChunk {
-    chunk: Buffer;
+export interface StreamChunk {
+    data: Buffer;
     timestamp: number;
 }
 
-export class MpegTsBuffer extends Lifecycle {
+export class StreamBuffer extends Lifecycle {
     private purgeTimer?: NodeJS.Timeout;
 
-    private readonly _buffer: MpegTsChunk[] = [];
+    private readonly _buffer: StreamChunk[] = [];
 
     constructor(
         private readonly broadcast: Broadcast,
+        private readonly marker: StreamMarker,
         private readonly maxAgeMs: number = 0,
     ) {
         super();
@@ -21,16 +22,16 @@ export class MpegTsBuffer extends Lifecycle {
 
     public buffer(cutoff?: number): Buffer[] {
         const chunks = this.chunks(cutoff);
-        return chunks.map((c) => c.chunk);
+        return chunks.map((c) => c.data);
     }
 
-    public chunks(cutoff?: number): MpegTsChunk[] {
+    public chunks(cutoff?: number): StreamChunk[] {
         if (this._buffer.length === 0) return [];
 
         const start = this.index(cutoff);
         if (start === -1) return [];
 
-        const idx = this.keyframe(start);
+        const idx = this.scan(start);
         if (idx === -1) return [];
 
         return this._buffer.slice(idx);
@@ -47,7 +48,7 @@ export class MpegTsBuffer extends Lifecycle {
     public get size(): number {
         let bytes = 0;
         for (const entry of this._buffer) {
-            bytes += entry.chunk.length;
+            bytes += entry.data.length;
         }
         return bytes;
     }
@@ -55,10 +56,10 @@ export class MpegTsBuffer extends Lifecycle {
     protected purge(): void {
         let end: number;
         if (this.maxAgeMs === 0) {
-            end = this.keyframe();
+            end = this.scan();
         } else {
             const cutoff = Date.now() - this.maxAgeMs;
-            end = this.keyframe(this.index(cutoff));
+            end = this.scan(this.index(cutoff));
         }
 
         if (end > 0) {
@@ -79,12 +80,12 @@ export class MpegTsBuffer extends Lifecycle {
         return end;
     }
 
-    private keyframe(start: number = this._buffer.length - 1): number {
+    private scan(start: number = this._buffer.length - 1): number {
         if (start < 0 || start > this._buffer.length - 1) return -1;
 
         let previous: Buffer | undefined;
         for (let i = start; i >= 0; i--) {
-            const current = this._buffer[i]!.chunk;
+            const current = this._buffer[i]!.data;
 
             let search: Buffer;
             if (previous === undefined) {
@@ -92,7 +93,7 @@ export class MpegTsBuffer extends Lifecycle {
             } else {
                 const overflow = previous.subarray(
                     0,
-                    Math.min(4, previous.length),
+                    Math.min(this.marker.size, previous.length),
                 );
                 search = Buffer.concat(
                     [current, overflow],
@@ -100,7 +101,7 @@ export class MpegTsBuffer extends Lifecycle {
                 );
             }
 
-            const index = indexOfKeyFrame(search);
+            const index = this.marker.find(search);
             if (index >= 0) return i;
 
             previous = current;
@@ -116,7 +117,7 @@ export class MpegTsBuffer extends Lifecycle {
 
         stream.on("data", (chunk) => {
             this._buffer.push({
-                chunk,
+                data: chunk,
                 timestamp: Date.now(),
             });
         });
