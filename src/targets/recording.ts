@@ -4,7 +4,7 @@ import { Ffmpeg } from "../spawn/ffmpeg";
 import { Broadcast } from "../sources/broadcast";
 import { FilePath } from "../paths";
 
-type SupportedFileFormat = "mp4" | "mkv" | "mov" | "ts";
+export type SupportedFileFormat = "mp4" | "mov";
 
 export class Recording extends Ffmpeg {
     private stream: Readable | null = null;

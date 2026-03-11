@@ -12,7 +12,6 @@ import { PointFilter } from "../tasks/filter/point";
 import { Broadcast } from "../sources/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
-import { Ignore } from "../tasks/filter/ignore";
 import { Timestamp } from "../tasks/draw/timestamp";
 
 export class Motion extends Agent {
@@ -43,12 +42,11 @@ export class Motion extends Agent {
         this.addTask(new Throttle(1));
         this.addTask(new Remote("mega"));
         this.addTask(new ConfidenceFilter(0.4));
-        this.addTask(new Ignore("vehicle"));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
         this.addTask(person);
-        this.addTask(vehicle);
+        //this.addTask(vehicle);
         this.addTask(viewer);
     }
 

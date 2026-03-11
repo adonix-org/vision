@@ -8,16 +8,16 @@ import { Camera } from "./sources/camera";
 
 const C121_RTSP_URL = process.env.C121_RTSP_URL!;
 
-const broadcast = new Camera("c121", C121_RTSP_URL);
+const camera = new Camera("c121", C121_RTSP_URL);
 
 const recording = new Recording(
-    broadcast,
+    camera,
     new DatePath("/Users/tybusby/Camera/recordings", "video"),
     "mp4",
     false,
 );
 
-application.register(broadcast);
+application.register(camera);
 
 await application.start();
 await new Promise((r) => setTimeout(r, 3_000));
