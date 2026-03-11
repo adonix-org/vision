@@ -31,7 +31,7 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         const args: string[] = [];
 
         args.push("-fflags", "nobuffer");
-        args.push("-f", "mpegts");
+        args.push("-f", this.broadcast.format);
         args.push("-i", "pipe:0");
         args.push("-vf", `fps=${this.fps}`);
         args.push("-f", "image2pipe");
