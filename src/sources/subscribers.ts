@@ -27,6 +27,8 @@ export class Subscribers {
 
     public send(chunk: Buffer): void {
         for (const subscriber of this.subscribers) {
+            if (!subscriber.writable) continue;
+
             const free = subscriber.write(chunk);
             if (!free) {
                 const overflow =
