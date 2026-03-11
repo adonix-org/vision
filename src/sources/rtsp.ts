@@ -38,7 +38,7 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
         args.push("-c:a", "aac");
         args.push("-ar", "48000");
         args.push("-ac", "2");
-        args.push("-f", "mpegts");
+        args.push("-f", this.format);
         args.push("pipe:1");
 
         return args;
