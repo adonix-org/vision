@@ -55,13 +55,15 @@ export class MpegTsBuffer extends Lifecycle {
     protected purge(): void {
         let end: number;
         if (this.maxAgeMs === 0) {
-            end = this.keyframe(this._buffer.length - 1);
+            end = this.keyframe();
         } else {
             const cutoff = Date.now() - this.maxAgeMs;
             end = this.keyframe(this.index(cutoff));
         }
 
-        this._buffer.splice(0, end);
+        if (end > 0) {
+            this._buffer.splice(0, end);
+        }
     }
 
     private index(cutoff?: number): number {
@@ -77,7 +79,7 @@ export class MpegTsBuffer extends Lifecycle {
         return end;
     }
 
-    private keyframe(start: number): number {
+    private keyframe(start: number = this._buffer.length - 1): number {
         if (start < 0 || start > this._buffer.length - 1) return -1;
 
         let previous: Buffer | undefined;
