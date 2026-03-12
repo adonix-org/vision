@@ -64,16 +64,20 @@ export class StreamMonitor extends Lifecycle {
             this.last = Date.now();
         });
 
+        clearInterval(this.timerId);
+
         this.timerId = setInterval(async () => {
             if (this.last < Date.now() - this.timeout) {
-                console.warn(
-                    this.toString(),
-                    `stream stalled ${this.timeout} ms`,
-                );
-                await this.broadcast.stop();
-                await this.broadcast.start();
+                await this.onstall();
             }
         }, this.timeout);
+    }
+
+    protected async onstall(): Promise<void> {
+        console.warn(this.toString(), `stream stalled ${this.timeout} ms`);
+
+        await this.broadcast.stop();
+        await this.broadcast.start();
     }
 
     public override toString(): string {
