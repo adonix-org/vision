@@ -1,8 +1,8 @@
 import { Readable } from "node:stream";
 import { Lifecycle } from "../../lifecycle";
-import { Broadcast } from "./broadcast";
+import { Broadcast, StreamFormat } from "./broadcast";
 
-export class StreamMonitor extends Lifecycle {
+export class StreamMonitor extends Lifecycle implements Broadcast {
     private stream: Readable | null = null;
     private timerId: NodeJS.Timeout | undefined;
     private last: number = 0;
@@ -14,6 +14,14 @@ export class StreamMonitor extends Lifecycle {
         super();
 
         this.register(broadcast);
+    }
+
+    public get format(): StreamFormat {
+        return this.broadcast.format;
+    }
+
+    public subscribe(timestamp?: number): Readable {
+        return this.broadcast.subscribe(timestamp);
     }
 
     protected override async onstart(): Promise<void> {

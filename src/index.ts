@@ -9,12 +9,11 @@ import { StreamMonitor } from "./sources/streams/monitor";
 import { PyServer } from "./spawn/pyserver";
 
 const url = process.env.C121_RTSP_URL!;
-const camera = new Camera("c121", url);
-
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
-const agent = new Motion(camera, folder, 1);
-const monitor = new StreamMonitor(camera);
-const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
+
+const monitor = new StreamMonitor(new Camera("c121", url));
+const agent = new Motion(monitor, folder, 1);
+const viewer = new MpvViewer(monitor, "LiveMotion");
 
 process.stdin.on("data", async (key) => {
     if (key.toString().toLowerCase() === "v") {
