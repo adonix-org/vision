@@ -33,7 +33,7 @@ export class StreamMonitor extends Lifecycle implements Broadcast {
 
         const success = await this.started(this.stream);
         if (!success) {
-            this.stop();
+            await this.onfail();
             return;
         }
 
@@ -51,11 +51,7 @@ export class StreamMonitor extends Lifecycle implements Broadcast {
 
     private async started(stream: Readable): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            const timer = setTimeout(() => {
-                console.warn(
-                    this.toString(),
-                    `${this.broadcast.toString()} timeout starting stream`,
-                );
+            const timer = setTimeout(async () => {
                 resolve(false);
             }, this.timeout);
 
@@ -86,6 +82,12 @@ export class StreamMonitor extends Lifecycle implements Broadcast {
 
         await this.broadcast.stop();
         await this.broadcast.start();
+    }
+
+    protected async onfail(): Promise<void> {
+        console.warn(this.toString(), `stream failed to start`);
+
+        this.stop();
     }
 
     public override toString(): string {
