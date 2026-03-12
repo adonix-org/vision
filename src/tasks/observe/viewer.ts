@@ -1,6 +1,6 @@
 import { PassThrough, Readable } from "node:stream";
 import { ImageFrame, ImageTask } from "..";
-import { Broadcast, StreamFormat } from "../../sources/broadcast";
+import { Broadcast, StreamFormat } from "../../sources/streams/broadcast";
 import { FfplayViewer } from "../../targets/ffplay";
 import { Lifecycle } from "../../lifecycle";
 

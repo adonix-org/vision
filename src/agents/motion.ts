@@ -8,7 +8,7 @@ import { Throttle } from "../tasks/filter/throttle";
 import { Record } from "../tasks/transfer/record";
 import { PreRoll } from "../targets/preroll";
 import { PointFilter } from "../tasks/filter/point";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
@@ -44,7 +44,7 @@ export class Motion extends Agent {
         this.addTask(drawing);
         this.addTask(animal);
         this.addTask(person);
-        this.addTask(vehicle);
+        // this.addTask(vehicle);
         this.addTask(viewer);
     }
 

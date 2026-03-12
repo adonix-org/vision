@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
 import { Lifecycle } from "../../lifecycle";
-import { Broadcast } from "../broadcast";
+import { Broadcast } from "./broadcast";
 
 export class StreamMonitor extends Lifecycle {
     private stream: Readable | null = null;

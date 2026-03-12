@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
 import { Executable } from "../spawn/executable";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast } from "../sources/streams/broadcast";
 
 export abstract class Viewer extends Executable {
     private stream: Readable | null = null;

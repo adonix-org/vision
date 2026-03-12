@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { Lifecycle } from "../lifecycle";
-import { Broadcast, StreamFormat } from "../sources/broadcast";
-import { Subscribers } from "../sources/subscribers";
+import { Broadcast, StreamFormat } from "../sources/streams/broadcast";
+import { Subscribers } from "../sources/streams/subscribers";
 import { StreamBuffer } from "../sources/streams/buffer";
 import { H264KeyFrame } from "../sources/streams/h264";
 

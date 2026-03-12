@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import { ImageFrame, ImageTask } from "..";
 import { CategoryPath } from "../../paths/category";
-import { Broadcast } from "../../sources/broadcast";
+import { Broadcast } from "../../sources/streams/broadcast";
 import { Recording } from "../../targets/recording";
 import { Lifecycle } from "../../lifecycle";
 

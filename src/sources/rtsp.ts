@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { Ffmpeg } from "../spawn/ffmpeg";
-import { Broadcast, StreamFormat } from "./broadcast";
-import { Subscribers } from "./subscribers";
+import { Broadcast, StreamFormat } from "./streams/broadcast";
+import { Subscribers } from "./streams/subscribers";
 
 export abstract class Rtsp extends Ffmpeg implements Broadcast {
     private static readonly DEFAULT_HIGHWATER = 2 * 1024 * 1024;

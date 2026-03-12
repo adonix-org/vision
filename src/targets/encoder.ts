@@ -1,6 +1,6 @@
 import { Readable } from "node:stream";
-import { Broadcast, StreamFormat } from "../sources/broadcast";
-import { Subscribers } from "../sources/subscribers";
+import { Broadcast, StreamFormat } from "../sources/streams/broadcast";
+import { Subscribers } from "../sources/streams/subscribers";
 import { Ffmpeg } from "../spawn/ffmpeg";
 
 export abstract class Encoder extends Ffmpeg implements Broadcast {

@@ -2,7 +2,7 @@ import { ImageSource } from "..";
 import { ImageDecoder } from "./image";
 import { Ffmpeg } from "../../spawn/ffmpeg";
 import { ImageFrame } from "../../tasks";
-import { Broadcast } from "../broadcast";
+import { Broadcast } from "../streams/broadcast";
 import { Readable } from "node:stream";
 import { JpegDecoder } from "./jpeg";
 

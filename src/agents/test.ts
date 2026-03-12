@@ -1,5 +1,5 @@
 import { Agent } from "./agent";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { EncoderTask } from "../tasks/transfer/encoder";
 import { ViewerTask } from "../tasks/observe/viewer";

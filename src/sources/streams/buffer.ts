@@ -1,5 +1,5 @@
 import { Lifecycle } from "../../lifecycle";
-import { Broadcast } from "../broadcast";
+import { Broadcast } from "./broadcast";
 import { StreamMarker } from "./marker";
 
 export interface StreamChunk {

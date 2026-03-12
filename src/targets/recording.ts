@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { promises as fs } from "node:fs";
 import { Ffmpeg } from "../spawn/ffmpeg";
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast } from "../sources/streams/broadcast";
 import { FilePath } from "../paths";
 
 export type SupportedFileFormat = "mp4" | "mov";

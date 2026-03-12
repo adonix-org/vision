@@ -1,4 +1,4 @@
-import { Broadcast } from "../sources/broadcast";
+import { Broadcast } from "../sources/streams/broadcast";
 import { Viewer } from "./viewer";
 
 export class FfplayViewer extends Viewer {
