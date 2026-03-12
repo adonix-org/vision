@@ -60,7 +60,7 @@ export abstract class Executable extends Lifecycle {
 
     protected oncode(code: number): void {
         const message = `process exited with code ${code}`;
-        console.error(this.toString(), message);
+        console.warn(this.toString(), message);
     }
 
     protected onsignal(signal: NodeJS.Signals): void {
@@ -98,7 +98,7 @@ export abstract class Executable extends Lifecycle {
 
                     console.warn(this.toString(), "sending SIGKILL");
                     child.kill("SIGKILL");
-                }, 3000);
+                }, 3_000);
             }, afterMs);
         });
     }

@@ -24,7 +24,7 @@ export class StreamMonitor extends Lifecycle {
 
         this.timerId = setInterval(async () => {
             if (this.last < Date.now() - this.timeout) {
-                console.error(this.toString(), `no data in ${this.timeout} ms`);
+                console.warn(this.toString(), `no data in ${this.timeout} ms`);
                 await this.broadcast.stop();
                 await this.broadcast.start();
             }
