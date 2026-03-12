@@ -5,12 +5,14 @@ import { application } from "./application";
 import { Motion } from "./agents/motion";
 import { Camera } from "./sources/camera";
 import { MpvViewer } from "./targets/mpv";
+import { StreamMonitor } from "./sources/streams/monitor";
 
 const url = process.env.C121_RTSP_URL!;
 const camera = new Camera("c121", url);
 
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
 const agent = new Motion(camera, folder, 1);
+const monitor = new StreamMonitor(camera);
 const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 
 process.stdin.on("data", async (key) => {
@@ -25,6 +27,8 @@ process.stdin.on("data", async (key) => {
 
 application.register(camera);
 application.register(agent);
+application.register(monitor);
+
 await application.start();
 
 application.register(viewer);
