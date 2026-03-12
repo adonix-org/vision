@@ -11,7 +11,6 @@ const camera = new Camera("c121", url);
 const monitor = new StreamMonitor(camera, 3_000);
 const viewer = new MpvViewer(camera);
 
-application.register(camera);
 application.register(monitor);
 application.register(viewer);
 

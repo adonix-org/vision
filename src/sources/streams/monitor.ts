@@ -12,6 +12,8 @@ export class StreamMonitor extends Lifecycle {
         private readonly timeout: number = 5_000,
     ) {
         super();
+
+        this.register(broadcast);
     }
 
     protected override async onstart(): Promise<void> {
@@ -22,13 +24,13 @@ export class StreamMonitor extends Lifecycle {
             this.last = Date.now();
         });
 
-        this.timerId = setInterval(async () => {
-            if (this.last < Date.now() - this.timeout) {
-                console.warn(this.toString(), `no data in ${this.timeout} ms`);
-                await this.broadcast.stop();
-                await this.broadcast.start();
-            }
-        }, this.timeout);
+        const success = await this.started(this.stream);
+        if (!success) {
+            this.stop();
+            return;
+        }
+
+        this.monitor();
     }
 
     protected override async onstop(): Promise<void> {
@@ -36,11 +38,39 @@ export class StreamMonitor extends Lifecycle {
 
         clearInterval(this.timerId);
 
-        this.stream?.removeAllListeners();
-        this.stream?.unpipe();
         this.stream?.destroy();
-
         this.stream = null;
+    }
+
+    private async started(stream: Readable): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const timer = setTimeout(() => {
+                console.warn(
+                    this.toString(),
+                    `${this.broadcast.toString()} timeout starting stream`,
+                );
+                resolve(false);
+            }, this.timeout);
+
+            stream.once("data", () => {
+                clearTimeout(timer);
+                this.last = Date.now();
+                resolve(true);
+            });
+        });
+    }
+
+    private monitor(): void {
+        this.timerId = setInterval(async () => {
+            if (this.last < Date.now() - this.timeout) {
+                console.warn(
+                    this.toString(),
+                    `stream stalled ${this.timeout} ms`,
+                );
+                await this.broadcast.stop();
+                await this.broadcast.start();
+            }
+        }, this.timeout);
     }
 
     public override toString(): string {
