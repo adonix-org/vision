@@ -1,6 +1,5 @@
 import { Agent } from "./agent";
 import { Remote } from "../tasks/remote/remote";
-import { PyServer } from "../spawn/pyserver";
 import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
@@ -26,7 +25,6 @@ export class Motion extends Agent {
         const decoder = new StreamDecoder(broadcast, fps);
         super(decoder);
 
-        this.register(new PyServer());
         this.register(preroll);
         this.register(viewer);
         this.register(animal);

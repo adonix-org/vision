@@ -6,6 +6,7 @@ import { Motion } from "./agents/motion";
 import { Camera } from "./sources/camera";
 import { MpvViewer } from "./targets/mpv";
 import { StreamMonitor } from "./sources/streams/monitor";
+import { PyServer } from "./spawn/pyserver";
 
 const url = process.env.C121_RTSP_URL!;
 const camera = new Camera("c121", url);
@@ -25,6 +26,7 @@ process.stdin.on("data", async (key) => {
     }
 });
 
+application.register(new PyServer());
 application.register(camera);
 application.register(agent);
 application.register(monitor);
