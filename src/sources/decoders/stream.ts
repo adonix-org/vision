@@ -27,6 +27,9 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         const args: string[] = [];
 
         args.push("-fflags", "nobuffer");
+        args.push("-flags", "low_delay");
+        args.push("-probesize", "32");
+        args.push("-analyzeduration", "0");
         args.push("-f", this.broadcast.format);
         args.push("-i", "pipe:0");
         args.push("-vf", `fps=${this.fps}`);
