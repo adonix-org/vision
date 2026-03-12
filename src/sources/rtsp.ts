@@ -2,13 +2,9 @@ import { Readable } from "node:stream";
 import { Ffmpeg } from "../spawn/ffmpeg";
 import { Broadcast, StreamFormat } from "./broadcast";
 import { Subscribers } from "./subscribers";
-import { StreamBuffer } from "./streams/buffer";
-import { H264KeyFrame } from "./streams/h264";
 
 export abstract class Rtsp extends Ffmpeg implements Broadcast {
     private static readonly DEFAULT_HIGHWATER = 2 * 1024 * 1024;
-
-    private readonly buffer: StreamBuffer;
 
     private readonly subscribers: Subscribers;
 
@@ -17,9 +13,6 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
         highwater = Rtsp.DEFAULT_HIGHWATER,
     ) {
         super();
-
-        this.buffer = new StreamBuffer(this, new H264KeyFrame());
-        this.register(this.buffer);
 
         this.subscribers = new Subscribers(highwater);
     }
@@ -46,13 +39,7 @@ export abstract class Rtsp extends Ffmpeg implements Broadcast {
     }
 
     public subscribe(): Readable {
-        const subscriber = this.subscribers.subscribe();
-
-        for (const chunk of this.buffer.stream()) {
-            subscriber.write(chunk);
-        }
-
-        return subscriber;
+        return this.subscribers.subscribe();
     }
 
     protected override async onstart(): Promise<void> {

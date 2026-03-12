@@ -13,8 +13,6 @@ const folder = process.env.LOCAL_IMAGE_FOLDER!;
 const agent = new Motion(camera, folder, 1);
 const viewer = new MpvViewer(camera, `LiveMotion - ${camera.name}`);
 
-camera.register(agent);
-
 process.stdin.on("data", async (key) => {
     if (key.toString().toLowerCase() === "v") {
         if (viewer.running) {
@@ -26,6 +24,7 @@ process.stdin.on("data", async (key) => {
 });
 
 application.register(camera);
+application.register(agent);
 await application.start();
 
 application.register(viewer);
