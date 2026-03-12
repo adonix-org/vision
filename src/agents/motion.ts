@@ -21,7 +21,7 @@ export class Motion extends Agent {
 
         const animal = new Record(preroll, folder, 10, 15, "animal", true);
         const person = new Record(preroll, folder, 5, 10, "person", true);
-        const vehicle = new Record(preroll, folder, 2, 3, "vehicle", true);
+        const vehicle = new Record(preroll, folder, 2, 3, "vehicle");
 
         const decoder = new StreamDecoder(broadcast, fps);
         super(decoder);
