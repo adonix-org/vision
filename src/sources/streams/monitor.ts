@@ -19,10 +19,9 @@ export class StreamMonitor extends Lifecycle {
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
+        this.last = 0;
+
         this.stream = this.broadcast.subscribe();
-        this.stream.on("data", () => {
-            this.last = Date.now();
-        });
 
         const success = await this.started(this.stream);
         if (!success) {
@@ -30,7 +29,7 @@ export class StreamMonitor extends Lifecycle {
             return;
         }
 
-        this.monitor();
+        this.monitor(this.stream);
     }
 
     protected override async onstop(): Promise<void> {
@@ -60,7 +59,11 @@ export class StreamMonitor extends Lifecycle {
         });
     }
 
-    private monitor(): void {
+    private monitor(stream: Readable): void {
+        stream.on("data", () => {
+            this.last = Date.now();
+        });
+
         this.timerId = setInterval(async () => {
             if (this.last < Date.now() - this.timeout) {
                 console.warn(
