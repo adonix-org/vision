@@ -10,8 +10,6 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     private static readonly MAX_AGE_SECONDS = 5;
 
     private stream: Readable | null = null;
-    private timeOrigin: number = Date.now();
-    private readonly msPerFrame: number;
 
     constructor(
         private readonly broadcast: Broadcast,
@@ -21,8 +19,6 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
         ),
     ) {
         super();
-
-        this.msPerFrame = 1_000 / fps;
 
         this.register(this.decoder);
     }
@@ -42,15 +38,7 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
     }
 
     public async next(): Promise<ImageFrame | null> {
-        const frame = await this.decoder.next();
-        if (frame === null) return null;
-
-        const timestamp = this.timeOrigin + frame.index * this.msPerFrame;
-
-        return {
-            ...frame,
-            timestamp,
-        };
+        return this.decoder.next();
     }
 
     protected override async onstart(): Promise<void> {
@@ -62,10 +50,6 @@ export class StreamDecoder extends Ffmpeg implements ImageSource {
 
         this.stream = this.broadcast.subscribe();
         this.stream.pipe(this.child.stdin);
-
-        this.stream.once("data", () => {
-            this.timeOrigin = Date.now();
-        });
 
         const cleanup = () => {
             this.stream?.destroy();
