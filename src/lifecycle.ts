@@ -40,7 +40,7 @@ export abstract class Lifecycle {
     }
 
     protected async onstart(): Promise<void> {
-        for (const child of [...this.children]) {
+        for (const child of this.children) {
             await child.start();
         }
     }

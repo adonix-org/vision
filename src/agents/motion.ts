@@ -44,7 +44,7 @@ export class Motion extends Agent {
         this.addTask(drawing);
         this.addTask(animal);
         this.addTask(person);
-        // this.addTask(vehicle);
+        this.addTask(vehicle);
         this.addTask(viewer);
     }
 

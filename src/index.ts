@@ -27,9 +27,8 @@ process.stdin.on("data", async (key) => {
 });
 
 application.register(new PyServer());
-application.register(camera);
-application.register(agent);
 application.register(monitor);
+application.register(agent);
 
 await application.start();
 
