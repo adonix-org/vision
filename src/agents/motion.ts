@@ -11,7 +11,6 @@ import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
-import { Timer } from "../tasks/observe/timer";
 import { Model } from "../tasks/remote/model";
 
 export class Motion extends Agent {
@@ -39,7 +38,7 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Throttle(1));
-        this.addTask(new Timer(new Model("mega"), 10_000));
+        this.addTask(new Model("mega"));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);

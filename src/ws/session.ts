@@ -48,7 +48,7 @@ export abstract class WebSocketSession extends Lifecycle {
 
     protected abstract onmessage(
         data: WebSocket.RawData,
-        isBinary?: boolean,
+        isBinary: boolean,
     ): Promise<void>;
 
     private connect(): void {
