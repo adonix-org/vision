@@ -1,5 +1,5 @@
 {
-    "name": "publisher",
+    "name": "vision",
     "version": "1.0.0",
     "description": "Capture and upload image snapshots to subscribers.",
     "main": "index.js",
