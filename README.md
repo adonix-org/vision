@@ -1,6 +1,6 @@
 # 📸 Vision
 
-Capture and upload image snapshots to subscribers.
+Simplify stream to action.
 
 [![Apache 2.0 License](https://badges.adonix.org/badge/License/Apache%202.0?color=blue)](https://github.com/adonix-org/publisher/blob/main/LICENSE)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adonix-org_publisher&metric=alert_status)](https://sonarcloud.io/summary/overall?id=adonix-org_publisher&branch=main)
