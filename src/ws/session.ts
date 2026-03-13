@@ -1,5 +1,4 @@
 import { WebSocket } from "ws";
-import { ActiveWebSocket } from "./active";
 import { Lifecycle } from "../lifecycle";
 
 export abstract class WebSocketSession extends Lifecycle {
@@ -8,11 +7,11 @@ export abstract class WebSocketSession extends Lifecycle {
 
     private readonly _onmessage = this.onmessage.bind(this);
 
-    private websocket: ActiveWebSocket | null = null;
+    private websocket: WebSocket | null = null;
     private reconnectTimer: NodeJS.Timeout | null = null;
 
     constructor(
-        private readonly factory: () => ActiveWebSocket,
+        private readonly factory: () => WebSocket,
         private reconnectSleepMs = WebSocketSession.DEFAULT_RECONNECT_SLEEP,
     ) {
         super();
@@ -44,6 +43,20 @@ export abstract class WebSocketSession extends Lifecycle {
             this.websocket.close();
             this.websocket = null;
         }
+    }
+
+    public send(
+        data: string | Buffer,
+        cb?: ((err?: Error) => void) | undefined,
+    ): void {
+        if (!this.websocket) {
+            const err = new Error("websocket not connected");
+            console.warn(this.toString(), err.message);
+            cb?.(err);
+            return;
+        }
+
+        this.websocket.send(data, cb);
     }
 
     protected abstract onmessage(
