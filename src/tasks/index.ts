@@ -38,7 +38,7 @@ export interface ImageError {
 }
 
 export interface ErrorTask {
-    handle(error: ImageError, signal?: AbortSignal): Promise<void>;
+    handle(error: ImageError): Promise<void>;
 
     toString(): string;
 }
