@@ -2,7 +2,7 @@ import { Readable } from "node:stream";
 import { Lifecycle } from "../../lifecycle";
 import { Broadcast, StreamFormat } from "./broadcast";
 
-export class StreamMonitor extends Lifecycle implements Broadcast {
+export class BroadcastMonitor extends Lifecycle implements Broadcast {
     private readonly _broadcast: Broadcast & Lifecycle;
     private stream: Readable | null = null;
     private timerId: NodeJS.Timeout | undefined;
