@@ -1,10 +1,10 @@
-import { Remote } from "../tasks/remote/remote";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Workflow } from "./workflow";
 import { Throttle } from "../tasks/filter/throttle";
 import { ExportSubject } from "./export";
 import { Trail } from "../tasks/draw/trail";
 import { Drawing } from "../tasks/draw";
+import { Model } from "../tasks/remote/model";
 
 export class Monitor extends Workflow {
     constructor(folder: string) {
@@ -19,7 +19,7 @@ export class Monitor extends Workflow {
         this.register(vehicle);
 
         this.addTask(new Throttle(1));
-        this.addTask(new Remote("mega"));
+        this.addTask(new Model("mega"));
         this.addTask(new Drawing(new Trail()));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(animal);

@@ -1,5 +1,4 @@
 import { Agent } from "./agent";
-import { Remote } from "../tasks/remote/remote";
 import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
@@ -12,6 +11,8 @@ import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
+import { Timer } from "../tasks/observe/timer";
+import { Model } from "../tasks/remote/model";
 
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
@@ -38,7 +39,7 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Throttle(1));
-        this.addTask(new Remote("mega"));
+        this.addTask(new Timer(new Model("mega"), 10_000));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);

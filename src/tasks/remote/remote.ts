@@ -28,10 +28,14 @@ export class Remote implements ImageTask {
             throw new Error(`${response.status} ${await response.text()}`);
         }
 
-        const result = await response.json();
-        assertImageFrame(result);
+        const json: unknown = await response.json();
+        return this.onresult(json, frame);
+    }
 
-        return decode(result);
+    protected onresult(json: unknown, _frame: ImageFrame): ImageFrame {
+        assertImageFrame(json);
+
+        return decode(json);
     }
 
     public toString(): string {
