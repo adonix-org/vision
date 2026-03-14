@@ -2,7 +2,7 @@ import { Executable } from "./executable";
 
 export class PyServer extends Executable {
     protected override executable(): string {
-        return `${process.cwd()}/python/.venv/bin/python`;
+        return `${process.cwd()}/.venv/bin/python`;
     }
 
     protected override args(): string[] {
