@@ -1,7 +1,7 @@
 import { ImageFrame, ImageTask } from "..";
 import { signal } from "../../constants";
 
-export class Upload implements ImageTask {
+export class Post implements ImageTask {
     constructor(
         private readonly url: URL,
         private readonly headers: Headers,
