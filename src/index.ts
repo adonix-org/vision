@@ -7,13 +7,12 @@ import { Camera } from "./sources/camera";
 import { MpvViewer } from "./targets/mpv";
 import { BroadcastMonitor } from "./sources/streams/monitor";
 import { PyServer } from "./spawn/pyserver";
-import { LiveWebSocket } from "./ws/live";
 
 const url = process.env.C121_RTSP_URL!;
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
 
 const broadcast = new BroadcastMonitor(new Camera("c121", url));
-const agent = new Motion(broadcast, folder, 1, LiveWebSocket.Factory);
+const agent = new Motion(broadcast, folder, 1);
 
 const viewer = new MpvViewer(broadcast, "LiveMotion");
 

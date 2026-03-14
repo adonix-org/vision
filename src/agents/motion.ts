@@ -1,4 +1,3 @@
-import { WebSocket } from "ws";
 import { Agent } from "./agent";
 import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
@@ -13,18 +12,11 @@ import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
 import { Model } from "../tasks/remote/model";
-import { WebSocketTask } from "../tasks/transfer/websocket";
 
 export class Motion extends Agent {
-    constructor(
-        broadcast: Broadcast,
-        folder: string,
-        fps: number,
-        factory: () => WebSocket,
-    ) {
+    constructor(broadcast: Broadcast, folder: string, fps: number) {
         const viewer = new ViewerTask("LiveMotion");
         const preroll = new PreRoll(broadcast, 10);
-        const websocket = new WebSocketTask(factory);
 
         const animal = new Record(preroll, folder, 10, 15, "animal", true);
         const person = new Record(preroll, folder, 5, 10, "person", true);
@@ -33,7 +25,6 @@ export class Motion extends Agent {
         const decoder = new StreamDecoder(broadcast, fps);
         super(decoder);
 
-        this.register(websocket);
         this.register(preroll);
         this.register(viewer);
         this.register(animal);
@@ -51,7 +42,6 @@ export class Motion extends Agent {
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
-        this.addTask(websocket);
         this.addTask(animal);
         this.addTask(person);
         // this.addTask(vehicle);
