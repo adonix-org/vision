@@ -13,7 +13,7 @@ const url = process.env.C121_RTSP_URL!;
 const folder = process.env.LOCAL_IMAGE_FOLDER!;
 
 const broadcast = new BroadcastMonitor(new Camera("c121", url));
-const agent = new Motion(broadcast, folder, 5, LiveWebSocket.Factory);
+const agent = new Motion(broadcast, folder, 1, LiveWebSocket.Factory);
 
 const viewer = new MpvViewer(broadcast, "LiveMotion");
 
