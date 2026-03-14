@@ -18,18 +18,6 @@ export class PyServer extends Executable {
 
             console.debug(this.toString(), msg);
         });
-
-        await new Promise<void>((resolve, reject) => {
-            if (this.child === null)
-                return reject(new Error("Process failed to start"));
-
-            this.child.stdout.on("data", (data) => {
-                const text = data.toString();
-                if (text.includes("PyServer ready")) {
-                    resolve();
-                }
-            });
-        });
     }
 
     protected override async onstop(): Promise<void> {

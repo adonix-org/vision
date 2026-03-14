@@ -32,16 +32,17 @@ export abstract class Executable extends Lifecycle {
         this._child.stderr.resume();
         this._child.stdout.resume();
 
-        this._child.once("exit", this.watch);
+        this._child.once("exit", this._watch);
+        this._child.once("error", this._error);
     }
 
     public override async stop(): Promise<void> {
-        this._child?.removeListener("exit", this.watch);
+        this._child?.removeListener("exit", this._watch);
 
         await super.stop();
     }
 
-    private readonly watch = (): void => {
+    private readonly _watch = (): void => {
         if (this._child === null) return;
 
         const code = this._child.exitCode;
@@ -57,6 +58,14 @@ export abstract class Executable extends Lifecycle {
         this.stop();
         this._child = null;
     };
+
+    private readonly _error = (err: Error): void => {
+        this.onerror(err);
+    };
+
+    protected onerror(err: Error): void {
+        console.error(this.toString(), err);
+    }
 
     protected oncode(code: number): void {
         const message = `process exited with code ${code}`;
