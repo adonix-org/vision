@@ -1,7 +1,7 @@
 {
     "name": "vision",
     "version": "1.0.0",
-    "description": "Capture and upload image snapshots to subscribers.",
+    "description": "Transform your streams to action.",
     "main": "index.js",
     "scripts": {
         "build": "tsc",
@@ -12,8 +12,12 @@
         "debug": "cross-env DEBUG=true npm run"
     },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "author": {
+        "name": "Ty Busby",
+        "email": "tybusby@adonix.org",
+        "url": "https://www.adonix.org"
+    },
+    "license": "Apache-2.0",
     "type": "module",
     "dependencies": {
         "canvas": "^3.2.1",
@@ -22,7 +26,7 @@
         "ws": "^8.19.0"
     },
     "devDependencies": {
-        "@types/node": "^25.2.3",
+        "@types/node": "^25.5.0",
         "@types/node-fetch": "^2.6.13",
         "@types/ws": "^8.18.1",
         "cross-env": "^10.1.0",
