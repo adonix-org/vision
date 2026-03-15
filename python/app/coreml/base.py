@@ -3,7 +3,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 import coremltools as ct
 import numpy as np
-from routes.schemas import Annotation
+from app.routes.schemas import Annotation
 
 class CoreMLBase:
     name: str = "base"
@@ -20,7 +20,7 @@ class CoreMLBase:
         self.model = ct.models.MLModel(self.path)
 
     def predict(self, image_path: str,
-                confidence_threshold: float = 0.0,
+                confidence_threshold: float = 0.25,
                 iou_threshold: float = 0.45) -> List[Annotation]:
         
         source = Image.open(image_path)

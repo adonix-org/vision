@@ -1,4 +1,4 @@
-from base import CoreMLBase
+from app.coreml.base import CoreMLBase
 
 yolo_classes = {
     0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train',
@@ -17,7 +17,7 @@ yolo_classes = {
 
 class CoreMLYoloV8s(CoreMLBase):
     name = "yolov8s"
-    path = "python/app/models/yolo/yolov8s.mlpackage"
+    path = "app/models/yolo/yolov8s.mlpackage"
     classes = yolo_classes
     imgsz = 640
 
