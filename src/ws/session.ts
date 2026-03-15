@@ -1,6 +1,8 @@
 import { WebSocket } from "ws";
 import { Lifecycle } from "../lifecycle";
 import { ActiveWebSocket } from "./active";
+import { ClientRequestArgs } from "node:http";
+import { HeartbeatOptions } from "./heartbeat";
 
 export class WebSocketSession extends Lifecycle {
     public static readonly DEFAULT_RECONNECT_SLEEP = 3_000;
@@ -60,10 +62,19 @@ export class WebSocketSession extends Lifecycle {
         this.websocket.send(data, cb);
     }
 
-    protected onconnect(
-        address: string | URL,
-    ): WebSocket {
-        return new ActiveWebSocket(address);
+    protected options():
+        | WebSocket.ClientOptions
+        | ClientRequestArgs
+        | undefined {
+        return undefined;
+    }
+
+    protected heartbeat(): HeartbeatOptions | undefined {
+        return undefined;
+    }
+
+    protected onconnect(address: string | URL): WebSocket {
+        return new ActiveWebSocket(address, this.options(), this.heartbeat());
     }
 
     protected onmessage(_data: WebSocket.RawData, _isBinary: boolean): void {
