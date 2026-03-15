@@ -1,10 +1,11 @@
+from typing import List, Literal
 from fastapi import APIRouter
+from fastapi.concurrency import run_in_threadpool
 from app.routes.schemas import Annotation, ImageFrame
 from ultralytics import YOLO
 import torch
 import numpy as np
 import cv2
-from typing import List, Literal
 
 router = APIRouter()
 
@@ -48,8 +49,8 @@ def run_model(frame: ImageFrame, model_name: Literal["mega", "yolo"]) -> List[An
 
 @router.post("/mega")
 async def mega_detector(frame: ImageFrame) -> List[Annotation]:
-    return run_model(frame, "mega")
+    return await run_in_threadpool(run_model, frame, "mega")
 
 @router.post("/yolo")
 async def yolo(frame: ImageFrame) -> List[Annotation]:
-    return run_model(frame, "yolo")
+    return await run_in_threadpool(run_model, frame, "yolo")
