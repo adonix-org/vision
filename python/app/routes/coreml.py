@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import List
 from fastapi import APIRouter
 from fastapi.concurrency import run_in_threadpool
@@ -12,8 +13,8 @@ yolo = CoreMLYoloV8s()
 
 @router.post("/coreml/mega")
 async def mega_detector(frame: ImageFrame) -> List[Annotation]:
-    return await run_in_threadpool(mega.predict, frame.image.buffer)
+    return await run_in_threadpool(mega.predict, BytesIO(frame.image.buffer))
 
 @router.post("/coreml/yolo")
 async def yolo(frame: ImageFrame) -> List[Annotation]:
-    return await run_in_threadpool(yolo.predict, frame.image.buffer)
+    return await run_in_threadpool(yolo.predict, BytesIO(frame.image.buffer))
