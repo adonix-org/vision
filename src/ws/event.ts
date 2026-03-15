@@ -6,9 +6,9 @@ export interface EventMessage {
 }
 
 export abstract class EventSession extends WebSocketSession {
-    protected abstract handle(msg: EventMessage): void | Promise<void>;
+    protected abstract handle(msg: EventMessage): void;
 
-    protected override async onmessage(data: WebSocket.RawData): Promise<void> {
+    protected override onmessage(data: WebSocket.RawData): void {
         const raw = data.toString();
 
         const json = this.safeParse(raw);
@@ -17,7 +17,7 @@ export abstract class EventSession extends WebSocketSession {
             return;
         }
 
-        await this.safeHandle(json as EventMessage);
+        this.safeHandle(json as EventMessage);
     }
 
     private safeParse(raw: string): unknown {
@@ -29,9 +29,9 @@ export abstract class EventSession extends WebSocketSession {
         }
     }
 
-    private async safeHandle(msg: EventMessage): Promise<void> {
+    private safeHandle(msg: EventMessage): void {
         try {
-            await this.handle(msg);
+            this.handle(msg);
         } catch (err) {
             console.error(this.toString(), "Error handling event:", msg, err);
         }

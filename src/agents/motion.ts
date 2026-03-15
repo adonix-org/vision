@@ -8,7 +8,6 @@ import { PreRoll } from "../targets/preroll";
 import { PointFilter } from "../tasks/filter/point";
 import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
-``;
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
 import { Model } from "../tasks/remote/model";
