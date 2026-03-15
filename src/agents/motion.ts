@@ -9,6 +9,7 @@ import { PreRoll } from "../targets/preroll";
 import { PointFilter } from "../tasks/filter/point";
 import { Broadcast } from "../sources/streams/broadcast";
 import { StreamDecoder } from "../sources/decoders/stream";
+``;
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
 import { Model } from "../tasks/remote/model";
@@ -38,7 +39,7 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Throttle(fps));
-        this.addTask(new Model("coreml/mega"));
+        this.addTask(new Model("coreml/yolo"));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);

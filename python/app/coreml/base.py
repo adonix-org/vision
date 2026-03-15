@@ -1,8 +1,5 @@
 from typing import IO, Dict, List
 from pathlib import Path
-from PIL import Image
-import coremltools as ct
-import numpy as np
 from app.routes.schemas import Annotation
 
 class CoreMLBase:
@@ -25,6 +22,7 @@ class CoreMLBase:
 
     def _load_model(self):
         if self.model is None:
+            import coremltools as ct
             self.model = ct.models.MLModel(self.path)
         
         return self.model
@@ -34,7 +32,10 @@ class CoreMLBase:
                 iou_threshold: float = 0.45) -> List[Annotation]:
         
         model = self._load_model()
-        
+
+        from PIL import Image
+        import numpy as np
+
         with Image.open(image) as source:
             square, scale = self.to_square(source)
 
@@ -48,7 +49,7 @@ class CoreMLBase:
 
         coordinates = np.array(prediction["coordinates"])
         confidence = np.array(prediction["confidence"])
-        
+
         if coordinates.size == 0 or confidence.size == 0:
             return []
 
@@ -86,7 +87,9 @@ class CoreMLBase:
 
         return annotations
     
-    def to_square(self, image: Image.Image, color=(0,0,0)):
+    def to_square(self, image, color=(0,0,0)):
+        from PIL import Image
+
         w, h = image.size
         scale = min(self.imgsz / w, self.imgsz / h)
         new_w, new_h = int(w * scale), int(h * scale)
