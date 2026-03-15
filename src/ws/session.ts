@@ -27,6 +27,20 @@ export class WebSocketSession extends Lifecycle {
         );
     }
 
+    public send(
+        data: string | Buffer,
+        cb?: ((err?: Error) => void) | undefined,
+    ): void {
+        if (!this.websocket) {
+            const err = new Error("websocket not connected");
+            console.warn(this.toString(), err.message);
+            cb?.(err);
+            return;
+        }
+
+        this.websocket.send(data, cb);
+    }
+
     protected override async onstart(): Promise<void> {
         await super.onstart();
 
@@ -46,20 +60,6 @@ export class WebSocketSession extends Lifecycle {
             this.websocket.close();
             this.websocket = null;
         }
-    }
-
-    public send(
-        data: string | Buffer,
-        cb?: ((err?: Error) => void) | undefined,
-    ): void {
-        if (!this.websocket) {
-            const err = new Error("websocket not connected");
-            console.warn(this.toString(), err.message);
-            cb?.(err);
-            return;
-        }
-
-        this.websocket.send(data, cb);
     }
 
     protected options():
