@@ -26,14 +26,14 @@ async def validation_exception_handler(_: Request, exc: RequestValidationError):
         },
     )
 
-# Directory of pyserver.py
+# directory of pyserver.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Routes folder
+# routes folder
 ROUTES_DIR = os.path.join(BASE_DIR, "routes")
 sys.path.insert(0, ROUTES_DIR)
 
-# Dynamically import each Python file in routes
+# dynamically import each Python file in routes
 for filename in os.listdir(ROUTES_DIR):
     if not filename.endswith(".py") or filename.startswith("_"):
         continue

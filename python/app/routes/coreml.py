@@ -1,5 +1,5 @@
-from io import BytesIO
 from typing import List
+from io import BytesIO
 from fastapi import APIRouter
 from fastapi.concurrency import run_in_threadpool
 from app.routes.schemas import Annotation, ImageFrame

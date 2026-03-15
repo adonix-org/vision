@@ -1,5 +1,5 @@
-from pydantic import Base64Bytes, BaseModel, Field
 from typing import List, Literal
+from pydantic import Base64Bytes, BaseModel, Field
 
 SUPPORTED_VERSION = 1
 

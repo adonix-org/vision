@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 from app.routes.schemas import ImageFrame
 
 router = APIRouter()
