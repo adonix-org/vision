@@ -19,7 +19,7 @@ export class Monitor extends Workflow {
         this.register(vehicle);
 
         this.addTask(new Throttle(1));
-        this.addTask(new Model("mega"));
+        this.addTask(new Model("coreml/mega"));
         this.addTask(new Drawing(new Trail()));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(animal);
