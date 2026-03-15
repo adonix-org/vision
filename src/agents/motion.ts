@@ -12,6 +12,7 @@ import { StreamDecoder } from "../sources/decoders/stream";
 import { ConfidenceFilter } from "../tasks/filter/confidence";
 import { Timestamp } from "../tasks/draw/timestamp";
 import { Model } from "../tasks/remote/model";
+import { Timer } from "../tasks/observe/timer";
 
 export class Motion extends Agent {
     constructor(broadcast: Broadcast, folder: string, fps: number) {
@@ -38,13 +39,13 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Throttle(fps));
-        this.addTask(new Model("coreml/mega"));
+        this.addTask(new Timer(new Model("coreml/yolo"), 10_000));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);
         this.addTask(person);
-        // this.addTask(vehicle);
+        this.addTask(vehicle);
         this.addTask(viewer);
     }
 

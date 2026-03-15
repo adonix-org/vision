@@ -8,13 +8,13 @@ from app.coreml.yolo import CoreMLYoloV8s
 
 router = APIRouter()
 
-mega = CoreMLMegaDetectorV6()
-yolo = CoreMLYoloV8s()
+megav6 = CoreMLMegaDetectorV6()
+yolov8= CoreMLYoloV8s()
 
 @router.post("/coreml/mega")
 async def mega_detector(frame: ImageFrame) -> List[Annotation]:
-    return await run_in_threadpool(mega.predict, BytesIO(frame.image.buffer))
+    return await run_in_threadpool(megav6.predict, BytesIO(frame.image.buffer))
 
 @router.post("/coreml/yolo")
 async def yolo(frame: ImageFrame) -> List[Annotation]:
-    return await run_in_threadpool(yolo.predict, BytesIO(frame.image.buffer))
+    return await run_in_threadpool(yolov8.predict, BytesIO(frame.image.buffer))
