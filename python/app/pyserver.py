@@ -33,7 +33,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROUTES_DIR = os.path.join(BASE_DIR, "routes")
 sys.path.insert(0, ROUTES_DIR)
 
-# dynamically import each Python file in routes
+# dynamically import each python file in routes
 for filename in os.listdir(ROUTES_DIR):
     if not filename.endswith(".py") or filename.startswith("_"):
         continue
