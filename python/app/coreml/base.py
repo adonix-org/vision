@@ -1,7 +1,6 @@
-from typing import IO, Union, Dict, List
+from typing import IO, Dict, List
 from pathlib import Path
 from PIL import Image
-from io import BytesIO
 import coremltools as ct
 import numpy as np
 from app.routes.schemas import Annotation
@@ -11,6 +10,7 @@ class CoreMLBase:
     path: str = ""
     classes: Dict[int, str] = {}
     imgsz: int = 640
+    load: bool = False
 
     def __init__(self):
         if not getattr(self, "path", None):
@@ -18,15 +18,25 @@ class CoreMLBase:
         if not Path(self.path).exists():
             raise FileNotFoundError(f"mlpackage does not exist: {self.path}")
         
-        self.model = ct.models.MLModel(self.path)
+        self.model = None
+
+        if self.load:
+            self._load_model()
+
+    def _load_model(self):
+        if self.model is None:
+            self.model = ct.models.MLModel(self.path)
+        
+        return self.model
 
     def predict(self, image: str | IO[bytes],
                 confidence_threshold: float = 0.25,
                 iou_threshold: float = 0.45) -> List[Annotation]:
         
-        source = Image.open(image)
-        square = self.to_square(source)
-        scale = self.imgsz / max(source.width, source.height)
+        model = self._load_model()
+        
+        with Image.open(image) as source:
+            square, scale = self.to_square(source)
 
         input_dict = {
             "image": square,
@@ -34,26 +44,31 @@ class CoreMLBase:
             "iouThreshold": iou_threshold,
         }
 
-        prediction = self.model.predict(input_dict)
+        prediction = model.predict(input_dict)
 
         coordinates = np.array(prediction["coordinates"])
         confidence = np.array(prediction["confidence"])
+        
+        if coordinates.size == 0 or confidence.size == 0:
+            return []
 
         class_inds = np.argmax(confidence, axis=1)
-        scores = confidence[np.arange(confidence.shape[0]), class_inds]
+        scores = confidence.max(axis=1)
 
         annotations: List[Annotation] = []
 
-        for i in range(len(coordinates)):
-            x_center, y_center, w_norm, h_norm = coordinates[i]
+        for i, (x_center, y_center, w_norm, h_norm) in enumerate(coordinates):
             score = float(scores[i])
+
+            if score < confidence_threshold:
+                continue
 
             x = int((x_center - w_norm / 2) * square.width / scale) 
             y = int((y_center - h_norm / 2) * square.height / scale)
             w = int(w_norm * square.width / scale)
             h = int(h_norm * square.height / scale)
 
-            category = self.classes[class_inds[i]]
+            category = self.classes.get(class_inds[i], "unknown")
 
             annotations.append(
                 Annotation(
@@ -71,20 +86,14 @@ class CoreMLBase:
 
         return annotations
     
-    def to_square(self, image: Image.Image, color=(0,0,0)) -> Image.Image:
+    def to_square(self, image: Image.Image, color=(0,0,0)):
         w, h = image.size
         scale = min(self.imgsz / w, self.imgsz / h)
         new_w, new_h = int(w * scale), int(h * scale)
 
         resized = image.resize((new_w, new_h), Image.LANCZOS)
         square = Image.new("RGB", (self.imgsz, self.imgsz), color)
-        square.paste(resized, (0, 0))  # top-left
-        return square
+        square.paste(resized, (0, 0))
 
-    def to_square_working(self, image: Image.Image, color=(0, 0, 0)) -> Image.Image:
-        img = image.copy()
-        img.thumbnail(self.imgsz, Image.LANCZOS)
-        new_img = Image.new("RGB", self.imgsz, color)
-        new_img.paste(img, (0, 0))
-        new_img.show()
-        return new_img
+        return square, scale
+
