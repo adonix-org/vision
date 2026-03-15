@@ -3,7 +3,6 @@ import { ViewerTask } from "../tasks/observe/viewer";
 import { Label } from "../tasks/draw/label";
 import { Trail } from "../tasks/draw/trail";
 import { Drawing } from "../tasks/draw";
-import { Throttle } from "../tasks/filter/throttle";
 import { Record } from "../tasks/transfer/record";
 import { PreRoll } from "../targets/preroll";
 import { PointFilter } from "../tasks/filter/point";
@@ -38,7 +37,6 @@ export class Motion extends Agent {
             new Timestamp(),
         );
 
-        this.addTask(new Throttle(fps));
         this.addTask(new Model("coreml/mega"));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
