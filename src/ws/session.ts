@@ -4,7 +4,7 @@ import { ClientRequestArgs } from "node:http";
 import { ActiveWebSocket } from "./active";
 import { HeartbeatOptions } from "./heartbeat";
 
-export abstract class WebSocketSession extends Lifecycle {
+export class WebSocketSession extends Lifecycle {
     public static readonly DEFAULT_RECONNECT_SLEEP = 3_000;
     public static readonly MINIMUM_RECONNECT_SLEEP = 1_000;
 
