@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from schemas import Annotation, ImageFrame
+from app.routes.schemas import Annotation, ImageFrame
 from ultralytics import YOLO
 import torch
 import numpy as np
@@ -11,8 +11,8 @@ router = APIRouter()
 device = "mps" if torch.backends.mps.is_available() else "cpu"
 
 models = {
-    "mega": YOLO("python/app/models/mega/MDV6-yolov9-c.pt").to(device),
-    "yolo": YOLO("python/app/models/yolo/yolov8s.pt").to(device)
+    "mega": YOLO("app/models/mega/MDV6-yolov9-c.pt").to(device),
+    "yolo": YOLO("app/models/yolo/yolov8s.pt").to(device)
 }
 
 def run_model(frame: ImageFrame, model_name: Literal["mega", "yolo"]) -> List[Annotation]:
@@ -47,9 +47,9 @@ def run_model(frame: ImageFrame, model_name: Literal["mega", "yolo"]) -> List[An
     return annotations
 
 @router.post("/mega")
-async def mega_detector(frame: ImageFrame):
+async def mega_detector(frame: ImageFrame) -> List[Annotation]:
     return run_model(frame, "mega")
 
 @router.post("/yolo")
-async def yolo(frame: ImageFrame):
+async def yolo(frame: ImageFrame) -> List[Annotation]:
     return run_model(frame, "yolo")

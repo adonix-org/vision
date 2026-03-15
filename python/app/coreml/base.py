@@ -1,6 +1,7 @@
-from typing import Dict, List
+from typing import IO, Union, Dict, List
 from pathlib import Path
-from PIL import Image, ImageDraw
+from PIL import Image
+from io import BytesIO
 import coremltools as ct
 import numpy as np
 from app.routes.schemas import Annotation
@@ -19,11 +20,11 @@ class CoreMLBase:
         
         self.model = ct.models.MLModel(self.path)
 
-    def predict(self, image_path: str,
+    def predict(self, image: str | IO[bytes],
                 confidence_threshold: float = 0.25,
                 iou_threshold: float = 0.45) -> List[Annotation]:
         
-        source = Image.open(image_path)
+        source = Image.open(image)
         square = self.to_square(source)
         scale = self.imgsz / max(source.width, source.height)
 

@@ -8,6 +8,10 @@ export abstract class Executable extends Lifecycle {
 
     protected abstract args(): string[];
 
+    protected cwd(): string {
+        return ".";
+    }
+
     protected get child(): ChildProcessWithoutNullStreams {
         if (!this._child) {
             throw new Error(`${this.executable()} is not running.`);
@@ -27,6 +31,7 @@ export abstract class Executable extends Lifecycle {
 
         this._child = spawn(this.executable(), this.args(), {
             stdio: ["pipe", "pipe", "pipe"],
+            cwd: this.cwd(),
         });
 
         this._child.stderr.resume();

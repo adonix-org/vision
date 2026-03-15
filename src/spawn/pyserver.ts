@@ -6,7 +6,11 @@ export class PyServer extends Executable {
     }
 
     protected override args(): string[] {
-        return [`${process.cwd()}/python/app/pyserver.py`];
+        return ["-m", "app.pyserver"];
+    }
+
+    protected override cwd(): string {
+        return "./python";
     }
 
     protected override async onstart(): Promise<void> {

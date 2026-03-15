@@ -2,8 +2,9 @@
 from PIL import Image, ImageDraw
 
 from app.coreml.yolo import CoreMLYoloV8s
+from app.coreml.mega import CoreMLMegaDetectorV6
 
-model = CoreMLYoloV8s()
+model = CoreMLMegaDetectorV6()
 
 def draw_annotations(image_path: str, annotations):
     original = Image.open(image_path).convert("RGB")
@@ -25,9 +26,8 @@ def draw_annotations(image_path: str, annotations):
 
     img.show()
 
-# Example usage
 if __name__ == "__main__":
     results = model.predict("app/test.jpeg")
     draw_annotations("app/test.jpeg", results)
     for a in results:
-        print(a.model_dump_json())  # Pydantic v2
+        print(a.model_dump_json())
