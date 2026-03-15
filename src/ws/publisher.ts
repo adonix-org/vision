@@ -1,6 +1,5 @@
 import { EventMessage, EventSession } from "./event";
 import { Lifecycle } from "../lifecycle";
-import WebSocket from "ws";
 
 const WSS_URL = process.env.LIVEIMAGE_WSS_PUBLISH!;
 const BEARER_TOKEN = process.env.LIVEIMAGE_ADMIN_TOKEN!;
@@ -14,15 +13,11 @@ export interface OnlineMessage extends EventMessage {
 
 export class PublisherSession extends EventSession {
     constructor(private readonly agent: Lifecycle) {
-        super(new URL(WSS_URL));
+        super(new URL(WSS_URL), {
+            headers: { Authorization: "Bearer " + BEARER_TOKEN },
+        });
 
         this.register(agent);
-    }
-
-    protected override options(): WebSocket.ClientOptions {
-        return {
-            headers: { Authorization: "Bearer " + BEARER_TOKEN },
-        };
     }
 
     protected override handle(msg: EventMessage): void {

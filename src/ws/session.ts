@@ -14,7 +14,11 @@ export class WebSocketSession extends Lifecycle {
     private reconnectTimer: NodeJS.Timeout | null = null;
 
     constructor(
-        private readonly address: string | URL,
+        protected readonly address: string | URL,
+        protected readonly options?:
+            | WebSocket.ClientOptions
+            | ClientRequestArgs,
+        protected readonly heartbeat?: HeartbeatOptions,
         private reconnectSleepMs = WebSocketSession.DEFAULT_RECONNECT_SLEEP,
     ) {
         super();
@@ -62,19 +66,8 @@ export class WebSocketSession extends Lifecycle {
         }
     }
 
-    protected options():
-        | WebSocket.ClientOptions
-        | ClientRequestArgs
-        | undefined {
-        return undefined;
-    }
-
-    protected heartbeat(): HeartbeatOptions | undefined {
-        return undefined;
-    }
-
-    protected onconnect(address: string | URL): WebSocket {
-        return new ActiveWebSocket(address, this.options(), this.heartbeat());
+    protected onconnect(): WebSocket {
+        return new ActiveWebSocket(this.address, this.options, this.heartbeat);
     }
 
     protected onmessage(_data: WebSocket.RawData, _isBinary: boolean): void {
@@ -82,7 +75,7 @@ export class WebSocketSession extends Lifecycle {
     }
 
     private connect(): void {
-        this.websocket = this.onconnect(this.address);
+        this.websocket = this.onconnect();
         this.websocket.once("close", this.reconnect);
         this.websocket.on("message", this._onmessage);
     }
