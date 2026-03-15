@@ -1,7 +1,7 @@
 import { Monitor } from "../workflows/monitor";
 import { Agent } from "./agent";
 import { LiveImage } from "../workflows/live";
-import { PublisherSession } from "../ws/publisher";
+import { PublisherSession } from "./publisher";
 import { PyServer } from "../spawn/pyserver";
 import { StreamDecoder } from "../sources/decoders/stream";
 import { Camera } from "../sources/camera";

@@ -1,4 +1,4 @@
-import { EventMessage, EventSession } from "./event";
+import { EventMessage, EventSession } from "../ws/event";
 import { Lifecycle } from "../lifecycle";
 
 const WSS_URL = process.env.LIVEIMAGE_WSS_PUBLISH!;
