@@ -2,7 +2,7 @@ from io import BytesIO
 from typing import List
 from fastapi import APIRouter
 from fastapi.concurrency import run_in_threadpool
-from schemas import Annotation, ImageFrame
+from app.routes.schemas import Annotation, ImageFrame
 from app.coreml.mega import CoreMLMegaDetectorV6
 from app.coreml.yolo import CoreMLYoloV8s
 

@@ -1,11 +1,11 @@
 from typing import List, Literal
 from fastapi import APIRouter
 from fastapi.concurrency import run_in_threadpool
-from app.routes.schemas import Annotation, ImageFrame
 from ultralytics import YOLO
 import torch
 import numpy as np
 import cv2
+from app.routes.schemas import Annotation, ImageFrame
 
 router = APIRouter()
 
