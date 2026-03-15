@@ -39,7 +39,7 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Throttle(fps));
-        this.addTask(new Model("coreml/yolo"));
+        this.addTask(new Model("coreml/mega"));
         this.addTask(new ConfidenceFilter(0.4));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
