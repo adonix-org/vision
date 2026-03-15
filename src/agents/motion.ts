@@ -38,7 +38,7 @@ export class Motion extends Agent {
         );
 
         this.addTask(new Model("coreml/mega"));
-        this.addTask(new ConfidenceFilter(0.4));
+        this.addTask(new ConfidenceFilter(0.3));
         this.addTask(new PointFilter(1740, 562, 20, "tree stump"));
         this.addTask(drawing);
         this.addTask(animal);

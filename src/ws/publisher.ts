@@ -1,4 +1,3 @@
-import { ActiveWebSocket } from "./active";
 import { EventMessage, EventSession } from "./event";
 import { Lifecycle } from "../lifecycle";
 
@@ -12,23 +11,13 @@ export interface OnlineMessage extends EventMessage {
     publishers: number;
 }
 
-class PublisherWebSocket extends ActiveWebSocket {
-    public static readonly Factory = () => new this();
-
-    constructor() {
+export class PublisherSession extends EventSession {
+    constructor(private readonly agent: Lifecycle) {
         super(new URL(WSS_URL), {
             headers: { Authorization: "Bearer " + BEARER_TOKEN },
         });
-    }
 
-    public override toString(): string {
-        return `${super.toString()}[PublisherWebSocket-${this.id}]`;
-    }
-}
-
-export class PublisherSession extends EventSession {
-    constructor(private readonly agent: Lifecycle) {
-        super(PublisherWebSocket.Factory);
+        this.register(agent);
     }
 
     protected override async handle(msg: EventMessage): Promise<void> {
@@ -37,11 +26,6 @@ export class PublisherSession extends EventSession {
             if (online.active > 0) this.agent.start();
             else this.agent.stop();
         }
-    }
-
-    protected override async onstop(): Promise<void> {
-        await super.onstop();
-        await this.agent.stop();
     }
 
     public override toString(): string {
